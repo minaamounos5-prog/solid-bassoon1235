@@ -1,0 +1,2977 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="dashboard">
+  <meta name="design-style" content="showroom">
+  <title>منصة العبقري التعليمية | البكالوريا المصرية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces (Showroom) */
+      --background: #fbfbfd;
+      --surface-container-low: #f5f5f7;
+      --surface-container: #e8e8ed;
+      --surface-container-high: #dcdce1;
+      --surface-pure: #ffffff;
+
+      /* Ink */
+      --on-surface: #1d1d1f;
+      --on-surface-variant: #6e6e73;
+
+      /* Rules */
+      --outline: #d2d2d7;
+      --outline-variant: #e5e5ea;
+
+      /* Accents */
+      --primary: #006bd6;
+      --primary-hover: #0055ad;
+      --on-primary: #ffffff;
+      --primary-container: #e8f1fd;
+      --on-primary-container: #0058b0;
+      --secondary: #bf4800;
+      --secondary-container: #fff0e6;
+      --tertiary: #1d1d1f;
+      --error: #d70015;
+      --error-container: #fdebec;
+      --on-error: #ffffff;
+
+      /* Semantic */
+      --positive: #248a3d;
+      --positive-container: #e9f6ec;
+      --warning: #b25000;
+      --warning-container: #fff4e5;
+
+      /* Focus ring */
+      --focus: #006bd6;
+
+      /* Data series */
+      --data-1: #006bd6;
+      --data-2: #bf4800;
+      --data-3: #248a3d;
+      --data-4: #8944ab;
+      --data-context: #aeaeb2;
+
+      /* Fonts (RTL Arabic first) */
+      --font-headline: 'Cairo', sans-serif;
+      --font-body: 'Cairo', sans-serif;
+      --font-label: 'Cairo', 'IBM Plex Mono', monospace;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      /* Type scale (Dashboard / Tool) */
+      --display-size: clamp(1.75rem, 1.35rem + 1.3vw, 2.35rem);
+      --headline-size: clamp(1.25rem, 1.05rem + 0.55vw, 1.55rem);
+      --subhead-size: clamp(1.0625rem, 1rem + 0.25vw, 1.2rem);
+      --body-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+      --label-size: 0.78rem;
+
+      /* Spacing scale (4pt base) */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+      --space-3xl: 6rem;
+
+      /* Shape */
+      --rounded: 9999px;
+      --rounded-md: 0.75rem;
+      --rounded-lg: 1.25rem;
+      --rounded-full: 9999px;
+
+      /* Style effects */
+      --headline-tracking: 0;
+      --figure-tracking: -0.02em;
+      --tile-shadow-hover: 0 8px 28px rgb(0 0 0 / 0.08);
+      --modal-shadow: 0 24px 60px rgb(0 0 0 / 0.18);
+      --backdrop-fill: rgb(29 29 31 / 0.48);
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
+    }
+
+    /* Base reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { overflow-x: clip; margin: 0; padding: 0; }
+    body {
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { position: static !important; }
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+    h1, h2, h3, h4, p { margin: 0; }
+
+    /* Focus rings */
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Page layout */
+    .app-shell {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: var(--space-md) var(--space-lg) var(--space-2xl);
+      display: grid;
+      gap: var(--space-xl);
+    }
+    .app-shell * { min-width: 0; }
+
+    /* Static Top Header */
+    .top-header {
+      background-color: var(--surface-container-low);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--rounded-md);
+      background-color: var(--primary);
+      color: var(--on-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-title {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: var(--headline-size);
+      line-height: 1.2;
+      color: var(--on-surface);
+    }
+    .brand-subtitle {
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+      font-weight: 600;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-xs);
+    }
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    .support-pill {
+      background-color: var(--surface-pure);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--rounded);
+      font-size: var(--label-size);
+      font-weight: 600;
+      color: var(--on-surface);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      min-height: 44px;
+    }
+    .support-pill bdi {
+      font-family: var(--font-mono);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--rounded);
+      border: 0;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--on-primary);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+    .btn-secondary {
+      background-color: var(--surface-container);
+      color: var(--on-surface);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background-color: var(--surface-container-high);
+    }
+    .btn-positive {
+      background-color: var(--positive);
+      color: var(--on-primary);
+    }
+    .btn-positive:hover:not(:disabled) {
+      opacity: 0.92;
+    }
+    .btn-danger {
+      background-color: var(--error-container);
+      color: var(--error);
+    }
+    .btn-danger:hover:not(:disabled) {
+      background-color: var(--error);
+      color: var(--on-error);
+    }
+    .btn-dev-plus {
+      background-color: var(--tertiary);
+      color: var(--background);
+      min-width: 44px;
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      font-weight: 800;
+    }
+    .btn-dev-plus:hover {
+      background-color: var(--primary);
+      color: var(--on-primary);
+    }
+    .plus-glyph {
+      font-size: 1.35rem;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    /* Chips & Badges */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--rounded);
+      font-size: var(--label-size);
+      font-weight: 700;
+    }
+    .chip-blue {
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .chip-orange {
+      background-color: var(--secondary-container);
+      color: var(--secondary);
+    }
+    .chip-green {
+      background-color: var(--positive-container);
+      color: var(--positive);
+    }
+    .chip-red {
+      background-color: var(--error-container);
+      color: var(--error);
+    }
+    .chip-neutral {
+      background-color: var(--surface-container);
+      color: var(--on-surface);
+    }
+
+    /* Showroom Tiles */
+    .tile {
+      background-color: var(--surface-container-low);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-xl) var(--space-lg);
+      border: 0;
+    }
+    .tile-white {
+      background-color: var(--surface-pure);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      border: 1px solid var(--outline-variant);
+    }
+    .tile-interactive {
+      transition: transform var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+    }
+    .tile-interactive:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--tile-shadow-hover);
+    }
+
+    /* Centered Headline Stack */
+    .headline-stack {
+      text-align: center;
+      padding-block: var(--space-lg) var(--space-md);
+    }
+    .headline-stack .eyebrow {
+      color: var(--secondary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: var(--space-xs);
+      display: inline-block;
+    }
+    .headline-stack h1, .headline-stack h2 {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: var(--display-size);
+      line-height: 1.2;
+      color: var(--on-surface);
+    }
+    .headline-stack .lede {
+      color: var(--on-surface-variant);
+      max-width: 58ch;
+      margin: var(--space-sm) auto 0;
+      font-size: var(--subhead-size);
+    }
+
+    /* Segmented Tabs */
+    .segmented {
+      display: inline-flex;
+      flex-wrap: wrap;
+      background-color: var(--surface-container);
+      padding: var(--space-xs);
+      border-radius: var(--rounded);
+      gap: var(--space-xs);
+    }
+    .seg-btn {
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--rounded);
+      border: 0;
+      background: transparent;
+      color: var(--on-surface-variant);
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-in-out), color var(--dur-micro) var(--ease-in-out);
+    }
+    .seg-btn.active {
+      background-color: var(--surface-pure);
+      color: var(--on-surface);
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.06);
+    }
+
+    /* Forms (Always-visible labels above inputs) */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+      gap: var(--space-lg);
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .field.full-span {
+      grid-column: 1 / -1;
+    }
+    .field label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--on-surface);
+    }
+    .field-hint {
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+    }
+    .input, .select, .textarea {
+      width: 100%;
+      min-height: 44px;
+      background-color: var(--surface-pure);
+      border: 1px solid var(--outline);
+      border-radius: var(--rounded);
+      padding: var(--space-sm) var(--space-md);
+      color: var(--on-surface);
+      transition: border-color var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
+    }
+    .select {
+      padding-inline-end: var(--space-xl);
+    }
+    .textarea {
+      border-radius: var(--rounded-md);
+      min-height: 96px;
+      resize: vertical;
+    }
+    .input:focus, .select:focus, .textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-container);
+    }
+    .password-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded-md);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      min-height: 44px;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Track Selection Cards */
+    .track-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+    .track-option {
+      background-color: var(--surface-pure);
+      border: 2px solid var(--outline-variant);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      cursor: pointer;
+      transition: border-color var(--dur-micro) var(--ease-out), background-color var(--dur-micro) var(--ease-out);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      text-align: right;
+    }
+    .track-option.selected {
+      border-color: var(--primary);
+      background-color: var(--primary-container);
+    }
+    .elective-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-xs);
+    }
+    .elective-btn {
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--rounded);
+      border: 1px solid var(--outline);
+      background-color: var(--surface-pure);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .elective-btn.selected {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    /* Inline status banner */
+    .status-banner {
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--rounded-md);
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    .status-banner.visible { display: flex; }
+    .status-banner.error {
+      background-color: var(--error-container);
+      color: var(--error);
+    }
+    .status-banner.success {
+      background-color: var(--positive-container);
+      color: var(--positive);
+    }
+    .status-banner.info {
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+
+    /* Auth Shell */
+    .auth-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+      gap: var(--space-lg);
+      align-items: start;
+    }
+    .curriculum-preview-list {
+      display: grid;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+    .curriculum-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      background-color: var(--surface-pure);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded-md);
+      font-weight: 600;
+    }
+
+    /* Student Dashboard Grids */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+    .kpi-tile {
+      text-align: center;
+      padding: var(--space-lg);
+    }
+    .kpi-label {
+      color: var(--on-surface-variant);
+      font-weight: 600;
+      font-size: var(--label-size);
+    }
+    .kpi-value {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: clamp(1.75rem, 1.4rem + 1vw, 2.35rem);
+      color: var(--on-surface);
+      font-variant-numeric: tabular-nums;
+      margin-block: var(--space-xs);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: var(--space-lg);
+    }
+    .course-tile {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-md);
+    }
+    .course-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-xs);
+    }
+    .course-title {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: var(--headline-size);
+      color: var(--on-surface);
+    }
+    .course-price {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--on-surface);
+    }
+    .course-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+      font-weight: 600;
+    }
+    .course-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: auto;
+    }
+    .course-actions .btn {
+      flex: 1 1 130px;
+    }
+
+    /* Course Detail / Media Viewer */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+    .media-preview-box {
+      background-color: var(--surface-container-low);
+      border-radius: var(--rounded-md);
+      overflow: hidden;
+      min-height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .media-preview-box img,
+    .media-preview-box video {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Tables */
+    .table-scroll {
+      overflow-x: auto;
+      border-radius: var(--rounded-md);
+      background-color: var(--surface-pure);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      font-size: 0.9rem;
+    }
+    .data-table th {
+      padding: var(--space-md);
+      font-weight: 700;
+      color: var(--on-surface-variant);
+      border-bottom: 2px solid var(--outline-variant);
+      white-space: nowrap;
+      background-color: var(--surface-container-low);
+    }
+    .data-table td {
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--outline-variant);
+      vertical-align: middle;
+    }
+    .tabular {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Exam Runner */
+    .exam-timer-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      background-color: var(--tertiary);
+      color: var(--background);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--rounded-md);
+    }
+    .timer-readout {
+      font-family: var(--font-mono);
+      font-size: 1.35rem;
+      font-weight: 700;
+      background-color: var(--primary);
+      color: var(--on-primary);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--rounded);
+    }
+    .question-card {
+      background-color: var(--surface-pure);
+      border-radius: var(--rounded-md);
+      padding: var(--space-lg);
+      display: grid;
+      gap: var(--space-md);
+    }
+    .mcq-option {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded-md);
+      background-color: var(--surface-container-low);
+      cursor: pointer;
+      min-height: 44px;
+      font-weight: 600;
+    }
+    .mcq-option input[type="radio"] {
+      accent-color: var(--primary);
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Developer Control Panel & Modals */
+    .overlay-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: var(--backdrop-fill);
+      z-index: 50;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: var(--space-lg);
+      overflow-y: auto;
+    }
+    .overlay-backdrop.open {
+      display: flex;
+    }
+    .panel-dialog {
+      width: 100%;
+      max-width: 1120px;
+      background-color: var(--background);
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--modal-shadow);
+      padding: var(--space-xl);
+      display: grid;
+      gap: var(--space-lg);
+      margin-block: var(--space-md);
+      animation: panelEnter var(--dur-short) var(--ease-out);
+    }
+    .panel-dialog.narrow {
+      max-width: 620px;
+    }
+    @keyframes panelEnter {
+      from { opacity: 0; transform: translateY(10px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .panel-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--outline-variant);
+    }
+    .dev-nav-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+    .dev-nav-btn {
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded);
+      border: 0;
+      background-color: var(--surface-container);
+      color: var(--on-surface);
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    .dev-nav-btn.active {
+      background-color: var(--primary);
+      color: var(--on-primary);
+    }
+    .dev-users-emoji-btn {
+      background-color: var(--secondary-container);
+      color: var(--secondary);
+    }
+    .dev-users-emoji-btn.active {
+      background-color: var(--secondary);
+      color: var(--on-primary);
+    }
+
+    /* Switch toggle */
+    .toggle-btn {
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--rounded);
+      border: 0;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    .toggle-btn.on {
+      background-color: var(--positive-container);
+      color: var(--positive);
+    }
+    .toggle-btn.off {
+      background-color: var(--error-container);
+      color: var(--error);
+    }
+
+    /* WhatsApp Message Box */
+    .wa-message-box {
+      background-color: var(--positive-container);
+      color: var(--on-surface);
+      border-radius: var(--rounded-md);
+      padding: var(--space-lg);
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      border-inline-start: 4px solid var(--positive);
+    }
+
+    /* Footer */
+    .site-footer {
+      background-color: var(--surface-container-low);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+    }
+    .site-footer strong {
+      color: var(--on-surface);
+    }
+
+    /* Utility visibility */
+    .hidden { display: none !important; }
+    .row-align-end {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: var(--space-sm);
+    }
+    .empty-state {
+      text-align: center;
+      padding: var(--space-xl);
+      color: var(--on-surface-variant);
+      background-color: var(--surface-pure);
+      border-radius: var(--rounded-md);
+    }
+
+    @container (max-width: 420px) {
+      .course-actions { flex-direction: column; }
+    }
+
+    @media (max-width: 640px) {
+      .app-shell { padding: var(--space-sm) var(--space-sm) var(--space-xl); }
+      .auth-layout { grid-template-columns: 1fr; }
+      .overlay-backdrop { padding: var(--space-xs); }
+      .panel-dialog { padding: var(--space-md); }
+      .top-header { padding: var(--space-md); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="brand-group">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c0 2 2.7 3 6 3s6-1 6-3v-5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">منصة العبقري التعليمية</div>
+          <div class="brand-subtitle">
+            <span class="chip chip-blue">البكالوريا المصرية</span>
+            <span>تطوير: <strong>Mina Josny 2000</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="support-pill" title="أرقام الدعم الفني والخدمة">
+          <i data-lucide="headphones" aria-hidden="true"></i>
+          <span>الدعم:</span>
+          <bdi dir="ltr">01276092939</bdi>
+          <span>•</span>
+          <bdi dir="ltr">01124896206</bdi>
+        </div>
+
+        <div id="header-user-box" class="hidden" style="display:flex; align-items:center; gap:var(--space-sm); flex-wrap:wrap;">
+          <span id="header-student-chip" class="chip chip-green"></span>
+          <button type="button" class="btn btn-secondary" onclick="logoutStudent()">
+            <i data-lucide="log-out" aria-hidden="true"></i>
+            <span>خروج</span>
+          </button>
+        </div>
+
+        <button type="button" class="btn btn-dev-plus" onclick="openDevPanel()" aria-label="لوحة تحكم المطور" title="فتح لوحة تحكم المطور (+)">
+          <span class="plus-glyph">+</span>
+          <span>لوحة المطور</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- VIEW 1: First-time Registration / Login -->
+    <main id="auth-view">
+      <div class="headline-stack">
+        <span class="eyebrow">البكالوريا المصرية • العام الدراسي 2026</span>
+        <h1>ابدأ رحلة التفوق في منصة العبقري التعليمية</h1>
+        <p class="lede">سجّل حسابك لأول مرة باختيار مسارك التخصصي وموادك المقررة، أو سجّل الدخول لمتابعة المحاضرات والامتحانات الشاملة.</p>
+      </div>
+
+      <div style="display:flex; justify-content:center; margin-bottom:var(--space-lg);">
+        <div class="segmented" role="tablist" aria-label="تبديل وضع الحساب">
+          <button type="button" id="tab-btn-register" class="seg-btn active" onclick="switchAuthMode('register')">تسجيل حساب جديد (لأول مرة)</button>
+          <button type="button" id="tab-btn-login" class="seg-btn" onclick="switchAuthMode('login')">تسجيل الدخول</button>
+        </div>
+      </div>
+
+      <div class="auth-layout">
+        <!-- Form Tile -->
+        <section class="tile">
+          <div id="auth-status" class="status-banner" role="alert" style="margin-bottom:var(--space-md);"></div>
+
+          <!-- Registration Form -->
+          <form id="register-form" onsubmit="handleRegister(event)" novalidate>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--space-sm); margin-bottom:var(--space-lg);">
+              <h2 style="font-size:var(--headline-size); font-weight:800;">استمارة تسجيل طالب جديد</h2>
+              <button type="button" class="btn btn-secondary" onclick="fillSampleStudent()">تعبئة بيانات تجربة</button>
+            </div>
+
+            <div class="form-grid">
+              <div class="field full-span">
+                <label for="reg-fullname">الاسم رباعي بالكامل</label>
+                <input class="input" id="reg-fullname" type="text" placeholder="مثال: يوسف أحمد محمد علي" required>
+                <span class="field-hint">يُشترط كتابة الاسم رباعياً كما في شهادة الميلاد أو البطاقة.</span>
+              </div>
+
+              <div class="field">
+                <label for="reg-student-phone">رقم تليفون الطالب</label>
+                <input class="input tabular" id="reg-student-phone" type="tel" dir="ltr" placeholder="01012345678" required>
+                <label class="checkbox-row" for="reg-whatsapp-confirm" style="margin-top:var(--space-xs);">
+                  <input type="checkbox" id="reg-whatsapp-confirm" checked>
+                  <span>أؤكد أن رقم الطالب مسجل عليه واتساب للتواصل وتفعيل الدورات</span>
+                </label>
+              </div>
+
+              <div class="field">
+                <label for="reg-parent-phone">رقم تليفون ولي الأمر</label>
+                <input class="input tabular" id="reg-parent-phone" type="tel" dir="ltr" placeholder="01234567890" required>
+                <span class="field-hint">للمتابعة الدورية وإبلاغ ولي الأمر بمستوى الطالب.</span>
+              </div>
+
+              <div class="field">
+                <label for="reg-email">البريد الإلكتروني</label>
+                <input class="input" id="reg-email" type="email" dir="ltr" placeholder="student@example.com" required>
+              </div>
+
+              <div class="field">
+                <label for="reg-password">كلمة السر الخاصة بالطالب</label>
+                <div class="password-wrap">
+                  <input class="input" id="reg-password" type="password" dir="ltr" placeholder="••••••••" required>
+                  <button type="button" class="btn btn-secondary" onclick="togglePasswordVis('reg-password', this)" aria-label="إظهار أو إخفاء كلمة السر">إظهار</button>
+                </div>
+              </div>
+
+              <div class="field full-span">
+                <label>اختيار المسار والمواد التخصصية (البكالوريا المصرية)</label>
+                <div class="track-grid">
+                  <!-- Track 1 -->
+                  <div id="track-card-med" class="track-option selected" onclick="selectTrack('medicine')" role="button" tabindex="0">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <strong>القسم الأول: طب وعلوم الحياة</strong>
+                      <span class="chip chip-blue">مادة واحدة</span>
+                    </div>
+                    <p style="font-size:0.88rem; color:var(--on-surface-variant);">اختر مادة واحدة من مادتين (الفيزياء أو الرياضيات):</p>
+                    <div class="elective-pills">
+                      <button type="button" id="elec-btn-physics" class="elective-btn selected" onclick="event.stopPropagation(); selectElective('medicine', 'physics')">الفيزياء</button>
+                      <button type="button" id="elec-btn-math" class="elective-btn" onclick="event.stopPropagation(); selectElective('medicine', 'math')">الرياضيات</button>
+                    </div>
+                  </div>
+
+                  <!-- Track 2 -->
+                  <div id="track-card-eng" class="track-option" onclick="selectTrack('engineering')" role="button" tabindex="0">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <strong>القسم الثاني: هندسة وعلوم الحاسب</strong>
+                      <span class="chip chip-orange">مادة واحدة</span>
+                    </div>
+                    <p style="font-size:0.88rem; color:var(--on-surface-variant);">اختر مادة واحدة من مادتين (البرمجة أو الكيمياء):</p>
+                    <div class="elective-pills">
+                      <button type="button" id="elec-btn-programming" class="elective-btn" onclick="event.stopPropagation(); selectElective('engineering', 'programming')">البرمجة</button>
+                      <button type="button" id="elec-btn-chemistry" class="elective-btn" onclick="event.stopPropagation(); selectElective('engineering', 'chemistry')">الكيمياء</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:var(--space-lg); display:flex; flex-wrap:wrap; gap:var(--space-md); align-items:center;">
+              <button type="submit" class="btn btn-primary" style="flex:1 1 240px;">
+                <i data-lucide="user-plus" aria-hidden="true"></i>
+                <span>إنشاء الحساب والدخول للمنصة</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Login Form -->
+          <form id="login-form" class="hidden" onsubmit="handleLogin(event)" novalidate>
+            <h2 style="font-size:var(--headline-size); font-weight:800; margin-bottom:var(--space-lg);">تسجيل الدخول لحساب الطالب</h2>
+            <div class="form-grid">
+              <div class="field full-span">
+                <label for="login-identifier">رقم تليفون الطالب أو البريد الإلكتروني</label>
+                <input class="input" id="login-identifier" type="text" dir="ltr" placeholder="010... / student@example.com" required>
+              </div>
+              <div class="field full-span">
+                <label for="login-password">كلمة السر</label>
+                <div class="password-wrap">
+                  <input class="input" id="login-password" type="password" dir="ltr" placeholder="••••••••" required>
+                  <button type="button" class="btn btn-secondary" onclick="togglePasswordVis('login-password', this)">إظهار</button>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:var(--space-lg);">
+              <button type="submit" class="btn btn-primary" style="width:100%;">
+                <i data-lucide="log-in" aria-hidden="true"></i>
+                <span>دخول إلى المنصة</span>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Side Curriculum Summary -->
+        <aside class="tile" style="display:grid; gap:var(--space-md);">
+          <div>
+            <span class="chip chip-blue">خطة مواد الطالب المختارة</span>
+            <h3 style="font-size:var(--subhead-size); font-weight:800; margin-top:var(--space-sm);">المواد المشتركة والتخصص</h3>
+            <p style="font-size:0.9rem; color:var(--on-surface-variant); margin-top:var(--space-xs);">تُضاف المواد المشتركة تلقائياً لجميع طلاب البكالوريا المصرية بجانب مادة المسار المختارة.</p>
+          </div>
+
+          <div id="auth-curriculum-summary" class="curriculum-preview-list"></div>
+
+          <div class="tile-white" style="display:grid; gap:var(--space-xs);">
+            <strong style="color:var(--primary);">الدعم الفني وخدمة الطلاب</strong>
+            <p style="font-size:0.88rem; color:var(--on-surface-variant);">للاستفسار عن الاشتراكات أو الدعم التقني تواصل مباشرة عبر الواتساب أو الهاتف:</p>
+            <div style="display:flex; flex-wrap:wrap; gap:var(--space-sm); margin-top:var(--space-xs);">
+              <span class="chip chip-green"><bdi dir="ltr">01276092939</bdi></span>
+              <span class="chip chip-green"><bdi dir="ltr">01124896206</bdi></span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <!-- VIEW 2: Student Portal -->
+    <main id="student-view" class="hidden" style="display:grid; gap:var(--space-xl);">
+      <!-- Welcome & KPIs -->
+      <section class="tile" style="display:grid; gap:var(--space-lg);">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--space-md);">
+          <div>
+            <span id="student-track-badge" class="chip chip-orange"></span>
+            <h1 id="student-welcome-name" style="font-size:var(--display-size); font-weight:800; margin-top:var(--space-xs);"></h1>
+            <p id="student-welcome-sub" style="color:var(--on-surface-variant); margin-top:var(--space-xs);"></p>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:var(--space-sm);">
+            <button type="button" class="btn btn-secondary" onclick="scrollToSection('exams-section')">
+              <i data-lucide="file-check-2" aria-hidden="true"></i>
+              <span>الامتحانات الشاملة</span>
+            </button>
+            <button type="button" class="btn btn-primary" onclick="openWhatsAppModal('باقة مواد البكالوريا الكاملة', 0)">
+              <i data-lucide="message-circle" aria-hidden="true"></i>
+              <span>اشترك عبر الواتساب</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="tile-white kpi-tile">
+            <div class="kpi-label">موادي المقررة</div>
+            <div id="kpi-my-subjects" class="kpi-value">4</div>
+            <div class="kpi-label">3 مشتركة + 1 تخصص</div>
+          </div>
+          <div class="tile-white kpi-tile">
+            <div class="kpi-label">الدورات المفعّلة لي</div>
+            <div id="kpi-active-courses" class="kpi-value">0</div>
+            <div class="kpi-label">جاهزة للمشاهدة والحل</div>
+          </div>
+          <div class="tile-white kpi-tile">
+            <div class="kpi-label">الامتحانات الشاملة المتاحة</div>
+            <div id="kpi-active-exams" class="kpi-value">0</div>
+            <div class="kpi-label">مفعّلة الآن من المطور</div>
+          </div>
+          <div class="tile-white kpi-tile">
+            <div class="kpi-label">مرفقات ومحتوى المنصة</div>
+            <div id="kpi-media-count" class="kpi-value">0</div>
+            <div class="kpi-label">صور • فيديوهات • ملفات</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Courses Section -->
+      <section style="display:grid; gap:var(--space-md);">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--space-md);">
+          <div>
+            <h2 style="font-size:var(--headline-size); font-weight:800;">الدورات والمواد الدراسية</h2>
+            <p style="color:var(--on-surface-variant); font-size:0.92rem;">تصفح مواد البكالوريا المصرية، استعرض الوسائط، أو اشترك عبر الواتساب.</p>
+          </div>
+          <div class="segmented" role="tablist" aria-label="تصفية المواد">
+            <button type="button" class="seg-btn active" id="filter-btn-mine" onclick="setCourseFilter('mine', this)">موادي المقررة</button>
+            <button type="button" class="seg-btn" id="filter-btn-shared" onclick="setCourseFilter('shared', this)">المواد المشتركة</button>
+            <button type="button" class="seg-btn" id="filter-btn-all" onclick="setCourseFilter('all', this)">جميع مواد المنصة</button>
+          </div>
+        </div>
+
+        <div id="courses-grid" class="card-grid"></div>
+      </section>
+
+      <!-- Selected Course Content Viewer -->
+      <section id="course-viewer-section" class="tile hidden" style="display:grid; gap:var(--space-lg);">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--space-md);">
+          <div>
+            <span id="viewer-course-badge" class="chip chip-blue"></span>
+            <h2 id="viewer-course-title" style="font-size:var(--headline-size); font-weight:800; margin-top:var(--space-xs);"></h2>
+          </div>
+          <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap;">
+            <button type="button" id="viewer-subscribe-btn" class="btn btn-positive" onclick="">
+              <i data-lucide="message-circle" aria-hidden="true"></i>
+              <span>اشترك في الدورة</span>
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="closeCourseViewer()">إغلاق العرض</button>
+          </div>
+        </div>
+
+        <div id="viewer-lock-notice" class="status-banner info"></div>
+
+        <div class="segmented" role="tablist" aria-label="تبويبات محتوى المادة">
+          <button type="button" class="seg-btn active" id="media-tab-images" onclick="switchCourseMediaTab('images', this)">الصور والشروحات</button>
+          <button type="button" class="seg-btn" id="media-tab-videos" onclick="switchCourseMediaTab('videos', this)">الفيديوهات</button>
+          <button type="button" class="seg-btn" id="media-tab-files" onclick="switchCourseMediaTab('files', this)">الملفات والمستندات</button>
+        </div>
+
+        <div id="viewer-media-content" class="media-grid"></div>
+      </section>
+
+      <!-- Comprehensive Exams Section -->
+      <section id="exams-section" class="tile" style="display:grid; gap:var(--space-lg);">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--space-md);">
+          <div>
+            <span class="chip chip-orange">تقييم البكالوريا</span>
+            <h2 style="font-size:var(--headline-size); font-weight:800; margin-top:var(--space-xs);">الامتحانات الشاملة التفاعلية</h2>
+            <p style="color:var(--on-surface-variant); font-size:0.92rem;">تخضع جميع الامتحانات لإدارة وتوقيت المطور مع تصحيح فوري لأسئلة الاختيار من متعدد.</p>
+          </div>
+        </div>
+
+        <div id="student-exams-grid" class="card-grid"></div>
+
+        <!-- Active Exam Runner -->
+        <div id="exam-runner-box" class="hidden" style="display:grid; gap:var(--space-md); margin-top:var(--space-md);">
+          <div class="exam-timer-bar">
+            <div>
+              <strong id="runner-exam-title" style="font-size:1.1rem;"></strong>
+              <div id="runner-exam-meta" style="font-size:0.85rem; opacity:0.85;"></div>
+            </div>
+            <div style="display:flex; align-items:center; gap:var(--space-sm);">
+              <span>الوقت المتبقي:</span>
+              <span id="runner-timer" class="timer-readout" dir="ltr">00:00</span>
+            </div>
+          </div>
+
+          <div id="runner-questions-list" style="display:grid; gap:var(--space-md);"></div>
+
+          <div id="runner-result-banner" class="status-banner"></div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:var(--space-sm); justify-content:flex-end;">
+            <button type="button" class="btn btn-secondary" onclick="closeExamRunner()">خروج من الامتحان</button>
+            <button type="button" id="runner-submit-btn" class="btn btn-primary" onclick="submitExamAttempt()">تسليم الإجابات وإظهار النتيجة</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div>
+        <strong>منصة العبقري التعليمية</strong> — المنصة المتكاملة لطلاب البكالوريا المصرية
+      </div>
+      <div>
+        تطوير وحقوق الملكية: <strong>Mina Josny 2000</strong> • هاتف المطور: <bdi dir="ltr">01276092939</bdi>
+      </div>
+      <div>
+        الدعم الفني: <bdi dir="ltr">01276092939</bdi> / <bdi dir="ltr">01124896206</bdi>
+      </div>
+    </footer>
+  </div>
+
+  <!-- DEVELOPER CONTROL PANEL OVERLAY (+) -->
+  <div id="dev-panel-backdrop" class="overlay-backdrop" role="dialog" aria-modal="true" aria-labelledby="dev-panel-title">
+    <div class="panel-dialog">
+      <div class="panel-header">
+        <div>
+          <span class="chip chip-blue">صلاحيات المطور</span>
+          <h2 id="dev-panel-title" style="font-size:var(--headline-size); font-weight:800; margin-top:var(--space-xs);">لوحة تحكم المطور — Mina Josny 2000</h2>
+          <p style="font-size:0.88rem; color:var(--on-surface-variant);">هاتف المطور: <bdi dir="ltr">01276092939</bdi> • إدارة المحتوى، الامتحانات، الأسعار، وسجل الطلاب</p>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:var(--space-sm); align-items:center;">
+          <button type="button" id="dev-btn-students-emoji" class="dev-nav-btn dev-users-emoji-btn" onclick="switchDevTab('students')" title="عرض سجل الطلاب المسجلين بالكامل">
+            <span style="font-size:1.25rem;" aria-hidden="true">👤</span>
+            <span>سجل المسجلين (<span id="dev-students-count">0</span>)</span>
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="closeDevPanel()">إغلاق اللوحة</button>
+        </div>
+      </div>
+
+      <div class="dev-nav-row" role="tablist" aria-label="أقسام لوحة المطور">
+        <button type="button" class="dev-nav-btn active" id="dev-tab-btn-media" onclick="switchDevTab('media')">
+          <i data-lucide="folder-up" aria-hidden="true"></i>
+          <span>الصور والفيديوهات والملفات</span>
+        </button>
+        <button type="button" class="dev-nav-btn" id="dev-tab-btn-exams" onclick="switchDevTab('exams')">
+          <i data-lucide="clipboard-list" aria-hidden="true"></i>
+          <span>إدارة الامتحانات الشاملة</span>
+        </button>
+        <button type="button" class="dev-nav-btn" id="dev-tab-btn-pricing" onclick="switchDevTab('pricing')">
+          <i data-lucide="wallet" aria-hidden="true"></i>
+          <span>الأسعار وتفعيل الدورات</span>
+        </button>
+        <button type="button" class="dev-nav-btn dev-users-emoji-btn" id="dev-tab-btn-students" onclick="switchDevTab('students')">
+          <span aria-hidden="true">👤</span>
+          <span>جدول الطلاب المسجلين</span>
+        </button>
+      </div>
+
+      <div id="dev-status-banner" class="status-banner"></div>
+
+      <!-- DEV TAB 1: Media & Content Management -->
+      <section id="dev-tab-media" style="display:grid; gap:var(--space-lg);">
+        <div class="card-grid">
+          <!-- Images Manager -->
+          <div class="tile" style="display:grid; gap:var(--space-md);">
+            <h3 style="font-weight:800; display:flex; align-items:center; gap:var(--space-xs);">
+              <i data-lucide="image" aria-hidden="true"></i>
+              <span>أداة رفع وإزالة الصور</span>
+            </h3>
+            <div class="field">
+              <label for="upload-img-course">المادة المستهدفة</label>
+              <select class="select" id="upload-img-course"></select>
+            </div>
+            <div class="field">
+              <label for="upload-img-title">عنوان الصورة / الشرح</label>
+              <input class="input" id="upload-img-title" type="text" placeholder="مثال: خريطة ذهنية للنحو">
+            </div>
+            <div class="field">
+              <label for="upload-img-file">اختر ملف الصورة</label>
+              <input class="input" id="upload-img-file" type="file" accept="image/*" style="padding-top:9px;">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="uploadMediaItem('image')">
+              <i data-lucide="upload" aria-hidden="true"></i>
+              <span>رفع الصورة</span>
+            </button>
+            <div id="dev-list-image" style="display:grid; gap:var(--space-xs);"></div>
+          </div>
+
+          <!-- Videos Manager -->
+          <div class="tile" style="display:grid; gap:var(--space-md);">
+            <h3 style="font-weight:800; display:flex; align-items:center; gap:var(--space-xs);">
+              <i data-lucide="video" aria-hidden="true"></i>
+              <span>أداة رفع وإزالة الفيديوهات</span>
+            </h3>
+            <div class="field">
+              <label for="upload-vid-course">المادة المستهدفة</label>
+              <select class="select" id="upload-vid-course"></select>
+            </div>
+            <div class="field">
+              <label for="upload-vid-title">عنوان المحاضرة المرئية</label>
+              <input class="input" id="upload-vid-title" type="text" placeholder="مثال: شرح الدرس الأول">
+            </div>
+            <div class="field">
+              <label for="upload-vid-file">اختر ملف الفيديو</label>
+              <input class="input" id="upload-vid-file" type="file" accept="video/*" style="padding-top:9px;">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="uploadMediaItem('video')">
+              <i data-lucide="upload" aria-hidden="true"></i>
+              <span>رفع الفيديو</span>
+            </button>
+            <div id="dev-list-video" style="display:grid; gap:var(--space-xs);"></div>
+          </div>
+
+          <!-- Files & Documents Manager -->
+          <div class="tile" style="display:grid; gap:var(--space-md);">
+            <h3 style="font-weight:800; display:flex; align-items:center; gap:var(--space-xs);">
+              <i data-lucide="file-text" aria-hidden="true"></i>
+              <span>أداة رفع وإزالة الملفات والمستندات</span>
+            </h3>
+            <div class="field">
+              <label for="upload-doc-course">المادة المستهدفة</label>
+              <select class="select" id="upload-doc-course"></select>
+            </div>
+            <div class="field">
+              <label for="upload-doc-title">اسم الملزمة أو المستند</label>
+              <input class="input" id="upload-doc-title" type="text" placeholder="مثال: ملخص القواعد والمراجعة">
+            </div>
+            <div class="field">
+              <label for="upload-doc-file">اختر الملف أو المستند</label>
+              <input class="input" id="upload-doc-file" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt" style="padding-top:9px;">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="uploadMediaItem('file')">
+              <i data-lucide="upload" aria-hidden="true"></i>
+              <span>رفع الملف</span>
+            </button>
+            <div id="dev-list-file" style="display:grid; gap:var(--space-xs);"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEV TAB 2: Comprehensive Exams Manager -->
+      <section id="dev-tab-exams" class="hidden" style="display:grid; gap:var(--space-lg);">
+        <form class="tile" onsubmit="createExam(event)" style="display:grid; gap:var(--space-md);">
+          <h3 style="font-weight:800;">إنشاء / رفع امتحان شامل جديد</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label for="exam-title">عنوان الامتحان الشامل</label>
+              <input class="input" id="exam-title" type="text" placeholder="مثال: الامتحان الشامل الأول — شهر نوفمبر" required>
+            </div>
+            <div class="field">
+              <label for="exam-course">المادة الدراسية</label>
+              <select class="select" id="exam-course"></select>
+            </div>
+            <div class="field">
+              <label for="exam-q-count">عدد الأسئلة</label>
+              <input class="input tabular" id="exam-q-count" type="number" min="1" max="100" value="5" required>
+            </div>
+            <div class="field">
+              <label for="exam-q-type">نوع الأسئلة</label>
+              <select class="select" id="exam-q-type">
+                <option value="mcq">اختيار من متعدد</option>
+                <option value="essay">أسئلة مقالية</option>
+                <option value="mixed">مختلط (اختياري + مقالي)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="exam-duration">مدة الامتحان (بالدقائق)</label>
+              <input class="input tabular" id="exam-duration" type="number" min="5" max="240" value="45" required>
+            </div>
+            <div class="field">
+              <label for="exam-schedule">تاريخ وتوقيت الامتحان</label>
+              <input class="input tabular" id="exam-schedule" type="datetime-local" dir="ltr">
+            </div>
+            <div class="field">
+              <label for="exam-file">إرفاق ملف أسئلة (اختياري)</label>
+              <input class="input" id="exam-file" type="file" accept=".pdf,.doc,.docx,.txt" style="padding-top:9px;">
+            </div>
+            <div class="field">
+              <label for="exam-active-init">حالة التفعيل المبدئية</label>
+              <select class="select" id="exam-active-init">
+                <option value="true">مفعّل ومتاح للطلاب</option>
+                <option value="false">متوقف مؤقتاً</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:var(--space-sm); align-items:center; justify-content:space-between; margin-top:var(--space-xs);">
+            <span class="field-hint">سيتم توليد بنية الأسئلة التفاعلية آلياً حسب العدد والنوع المختار مع إمكانية إضافة أسئلة مخصصة بالأسفل.</span>
+            <button type="submit" class="btn btn-primary">
+              <i data-lucide="plus-circle" aria-hidden="true"></i>
+              <span>حفظ ورفع الامتحان الشامل</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="tile" style="display:grid; gap:var(--space-md);">
+          <h3 style="font-weight:800;">قائمة الامتحانات الشاملة (التفعيل والإيقاف)</h3>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>عنوان الامتحان</th>
+                  <th>المادة</th>
+                  <th>عدد الأسئلة</th>
+                  <th>النوع</th>
+                  <th>المدة / التوقيت</th>
+                  <th>الحالة</th>
+                  <th>إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="dev-exams-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEV TAB 3: Pricing & Course Activation -->
+      <section id="dev-tab-pricing" class="hidden" style="display:grid; gap:var(--space-lg);">
+        <div class="tile" style="display:grid; gap:var(--space-md);">
+          <h3 style="font-weight:800;">تحديد أسعار الدورات وفتح/إغلاق الاشتراك للطلاب</h3>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>المادة</th>
+                  <th>المسار</th>
+                  <th>السعر (ج.م)</th>
+                  <th>خطة الاشتراك</th>
+                  <th>إتاحة الدورة</th>
+                  <th>حفظ</th>
+                </tr>
+              </thead>
+              <tbody id="dev-pricing-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tile" style="display:grid; gap:var(--space-md);">
+          <h3 style="font-weight:800;">طلبات الاشتراك الواردة (تفعيل مباشر للطلاب)</h3>
+          <div id="dev-requests-container"></div>
+        </div>
+      </section>
+
+      <!-- DEV TAB 4: Registered Students Table (👤) -->
+      <section id="dev-tab-students" class="hidden" style="display:grid; gap:var(--space-md);">
+        <div class="tile" style="display:grid; gap:var(--space-md);">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:var(--space-md);">
+            <div>
+              <h3 style="font-weight:800; display:flex; align-items:center; gap:var(--space-xs);">
+                <span aria-hidden="true">👤</span>
+                <span>القائمة الكاملة للطلاب المسجلين في المنصة</span>
+              </h3>
+              <p style="font-size:0.88rem; color:var(--on-surface-variant);">تشمل كافة البيانات التفصيلية: الاسم الرباعي، رقم الطالب، رقم ولي الأمر، البريد، كلمة السر، المسار، وتفعيل الدورات.</p>
+            </div>
+            <div class="row-align-end">
+              <div class="field" style="min-width:220px;">
+                <label for="dev-student-search">بحث عن طالب</label>
+                <input class="input" id="dev-student-search" type="text" placeholder="الاسم، الهاتف، البريد..." oninput="renderDevStudentsTable()">
+              </div>
+              <button type="button" class="btn btn-secondary" onclick="exportStudentsCsv()">
+                <i data-lucide="download" aria-hidden="true"></i>
+                <span>تصدير CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="dev-students-table-wrap" class="table-scroll"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- WHATSAPP SUBSCRIPTION MODAL -->
+  <div id="wa-modal-backdrop" class="overlay-backdrop" role="dialog" aria-modal="true" aria-labelledby="wa-modal-title">
+    <div class="panel-dialog narrow">
+      <div class="panel-header">
+        <div>
+          <span class="chip chip-green">بوابة الاشتراك عبر واتساب</span>
+          <h2 id="wa-modal-title" style="font-size:var(--headline-size); font-weight:800; margin-top:var(--space-xs);">اشترك في الدورة</h2>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="closeWhatsAppModal()">إغلاق</button>
+      </div>
+
+      <div id="wa-course-info" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--space-sm); background-color:var(--surface-container-low); padding:var(--space-md); border-radius:var(--rounded-md);"></div>
+
+      <div style="display:grid; gap:var(--space-xs);">
+        <strong style="font-size:0.9rem;">نص رسالة الواتساب الجاهزة للإرسال:</strong>
+        <div id="wa-message-preview" class="wa-message-box"></div>
+      </div>
+
+      <div style="display:grid; gap:var(--space-sm);">
+        <strong style="font-size:0.9rem;">أرقام الدعم الفني والخدمة لاستلام الرسالة والتحويل:</strong>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:var(--space-sm);">
+          <div class="tile-white" style="display:flex; justify-content:space-between; align-items:center; gap:var(--space-sm); padding:var(--space-md);">
+            <div>
+              <div style="font-size:0.8rem; color:var(--on-surface-variant);">الرقم الأول (المطور والدعم)</div>
+              <strong class="tabular" dir="ltr" style="font-size:1.05rem;">01276092939</strong>
+            </div>
+            <button type="button" class="btn btn-secondary" onclick="copyTextValue('01276092939', 'تم نسخ الرقم الأول 01276092939')">نسخ</button>
+          </div>
+          <div class="tile-white" style="display:flex; justify-content:space-between; align-items:center; gap:var(--space-sm); padding:var(--space-md);">
+            <div>
+              <div style="font-size:0.8rem; color:var(--on-surface-variant);">الرقم الثاني (خدمة الطلاب)</div>
+              <strong class="tabular" dir="ltr" style="font-size:1.05rem;">01124896206</strong>
+            </div>
+            <button type="button" class="btn btn-secondary" onclick="copyTextValue('01124896206', 'تم نسخ الرقم الثاني 01124896206')">نسخ</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="wa-copy-feedback" class="status-banner success"></div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:var(--space-sm);">
+        <button type="button" class="btn btn-primary" style="flex:1 1 200px;" onclick="copyWhatsAppMessage()">
+          <i data-lucide="copy" aria-hidden="true"></i>
+          <span>نسخ رسالة الواتساب</span>
+        </button>
+        <button type="button" class="btn btn-positive" style="flex:1 1 200px;" onclick="submitSubscriptionRequest()">
+          <i data-lucide="send" aria-hidden="true"></i>
+          <span>تسجيل طلب الاشتراك للمراجعة</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <api-shim></api-shim>
+
+  <script>
+    // In-memory Blob URLs for current session playback (never persisted to notebookAppApi)
+    const sessionObjectUrls = {};
+
+    // Static Catalog Definition for Egyptian Baccalaureate
+    const COURSES_CATALOG = [
+      {
+        id: 'arabic',
+        name: `اللغة العربية`,
+        category: 'shared',
+        trackLabel: `مادة مشتركة لجميع الأقسام`,
+        description: `النحو، البلاغة، الأدب، النصوص المتحررة، والتعبير وفق نظام البكالوريا المصرية.`
+      },
+      {
+        id: 'english',
+        name: `اللغة الإنجليزية`,
+        category: 'shared',
+        trackLabel: `مادة مشتركة لجميع الأقسام`,
+        description: `القواعد، المفردات، القطع الفهمية، والترجمة والمقال بأحدث المواصفات.`
+      },
+      {
+        id: 'history',
+        name: `التاريخ الوطني`,
+        category: 'shared',
+        trackLabel: `مادة مشتركة لجميع الأقسام`,
+        description: `تاريخ مصر الحديث والمعاصر والقضايا الوطنية مع خرائط زمنية وبنوك أسئلة.`
+      },
+      {
+        id: 'physics',
+        name: `الفيزياء`,
+        category: 'medicine',
+        trackLabel: `القسم الأول: طب وعلوم الحياة`,
+        description: `الكهربية، المغناطيسية، والفيزياء الحديثة مع تطبيقات حل المسائل المعقدة.`
+      },
+      {
+        id: 'math',
+        name: `الرياضيات`,
+        category: 'medicine',
+        trackLabel: `القسم الأول: طب وعلوم الحياة`,
+        description: `التفاضل والتكامل، الجبر والهندسة الفراغية، والديناميكا والإحصاء.`
+      },
+      {
+        id: 'programming',
+        name: `البرمجة`,
+        category: 'engineering',
+        trackLabel: `القسم الثاني: هندسة وعلوم الحاسب`,
+        description: `أساسيات الخوارزميات، هياكل البيانات، والبرمجة الهيكلية والكائنية.`
+      },
+      {
+        id: 'chemistry',
+        name: `الكيمياء`,
+        category: 'engineering',
+        trackLabel: `القسم الثاني: هندسة وعلوم الحاسب`,
+        description: `الكيمياء العضوية، التحليلية، والاتزان الكيميائي والكهربية.`
+      }
+    ];
+
+    const DEFAULT_STATE = {
+      students: [],
+      currentStudentId: null,
+      courseConfigs: {
+        arabic: { price: 300, plan: `اشتراك شهري`, enabled: true },
+        english: { price: 300, plan: `اشتراك شهري`, enabled: true },
+        history: { price: 250, plan: `اشتراك شهري`, enabled: true },
+        physics: { price: 400, plan: `اشتراك شهري`, enabled: true },
+        math: { price: 400, plan: `اشتراك شهري`, enabled: true },
+        programming: { price: 450, plan: `اشتراك شهري`, enabled: true },
+        chemistry: { price: 400, plan: `اشتراك شهري`, enabled: true }
+      },
+      mediaItems: [
+        {
+          id: 'm_init_1',
+          courseId: 'arabic',
+          type: 'file',
+          title: `خريطة مراجعة البلاغة والنحو الأساسية`,
+          fileName: `balagha-summary.pdf`,
+          fileSize: `420 KB`,
+          createdAt: `2026-11-20`
+        },
+        {
+          id: 'm_init_2',
+          courseId: 'programming',
+          type: 'image',
+          title: `مخطط هياكل البيانات والخوارزميات`,
+          fileName: `algorithms-chart.svg`,
+          fileSize: `85 KB`,
+          createdAt: `2026-11-21`
+        }
+      ],
+      exams: [
+        {
+          id: 'ex_1',
+          title: `الامتحان الشامل التمهيدي — اللغة العربية`,
+          courseId: 'arabic',
+          questionCount: 4,
+          questionType: 'mcq',
+          durationMinutes: 30,
+          scheduledAt: `2026-11-22T18:00`,
+          active: true,
+          attachmentName: ``,
+          questions: [
+            {
+              id: 'q1',
+              kind: 'mcq',
+              prompt: `أي من المحسنات البديعية التالية يُعد محسناً لفظياً يعطي جرساً موسيقياً في النثر؟`,
+              options: [`الطباق`, `المقابلة`, `السجع`, `التورية`],
+              correctIndex: 2
+            },
+            {
+              id: 'q2',
+              kind: 'mcq',
+              prompt: `«إنّما المؤمنون إخوة» — نوع «ما» المتصلة بـ «إنّ» في الآية الكريمة:`,
+              options: [`موصولة`, `كافّة عن العمل`, `شرطية`, `ناصبة`],
+              correctIndex: 1
+            },
+            {
+              id: 'q3',
+              kind: 'mcq',
+              prompt: `المدرسة الأدبية التي اعتمدت على الجمع بين التراث والعصرية في الشعر الحديث هي:`,
+              options: [`الإحياء والبعث`, `الديوان`, `المهاجر`, `الواقعية`],
+              correctIndex: 0
+            },
+            {
+              id: 'q4',
+              kind: 'mcq',
+              prompt: `إعراب كلمة «مجتهدين» في جملة: «ما زال الطلاب مجتهدين»:`,
+              options: [`حال منصوبة`, `خبر ما زال منصوب بالياء`, `نعت منصوب`, `مفعول به`],
+              correctIndex: 1
+            }
+          ]
+        },
+        {
+          id: 'ex_2',
+          title: `تقييم شامل — أساسيات البرمجة والخوارزميات`,
+          courseId: 'programming',
+          questionCount: 3,
+          questionType: 'mixed',
+          durationMinutes: 40,
+          scheduledAt: `2026-11-23T20:00`,
+          active: true,
+          attachmentName: ``,
+          questions: [
+            {
+              id: 'pq1',
+              kind: 'mcq',
+              prompt: `ما التعقيد الزمني لخوارزمية البحث الثنائي (Binary Search) على مصفوفة مرتبة؟`,
+              options: [`O(n)`, `O(log n)`, `O(n^2)`, `O(1)`],
+              correctIndex: 1
+            },
+            {
+              id: 'pq2',
+              kind: 'mcq',
+              prompt: `أي بنية بيانات تعمل بمبدأ الداخل أولاً يخرج أولاً (FIFO)؟`,
+              options: [`المكدس Stack`, `الطابور Queue`, `الشجرة Tree`, `المخطط Graph`],
+              correctIndex: 1
+            },
+            {
+              id: 'pq3',
+              kind: 'essay',
+              prompt: `اشرح باختصار الفرق بين المتغير المحلي (Local Variable) والمتغير العام (Global Variable).`,
+              options: [],
+              correctIndex: -1
+            }
+          ]
+        }
+      ],
+      subscriptionRequests: [],
+      examAttempts: []
+    };
+
+    let appState = cloneData(DEFAULT_STATE);
+    let draftTrack = 'medicine';
+    let draftElective = 'physics';
+    let activeCourseFilter = 'mine';
+    let activeViewerCourseId = null;
+    let activeViewerMediaTab = 'images';
+    let activeDevTab = 'media';
+    let activeExamRunnerId = null;
+    let examTimerHandle = null;
+    let examRemainingSeconds = 0;
+    let activeWaCourseName = '';
+    let activeWaCourseId = '';
+    let activeWaCoursePrice = 0;
+
+    function cloneData(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getCourseMeta(courseId) {
+      return COURSES_CATALOG.find(function(c) { return c.id === courseId; }) || COURSES_CATALOG[0];
+    }
+
+    function getTrackName(trackKey) {
+      return trackKey === 'medicine'
+        ? `القسم الأول: طب وعلوم الحياة`
+        : `القسم الثاني: هندسة وعلوم الحاسب`;
+    }
+
+    function getCurrentStudent() {
+      if (!appState.currentStudentId) return null;
+      return appState.students.find(function(s) { return s.id === appState.currentStudentId; }) || null;
+    }
+
+    async function persistState() {
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+          await window.notebookAppApi.setAppState(appState);
+        }
+      } catch (err) {
+        console.error('State persistence error:', err);
+      }
+    }
+
+    async function initApp() {
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+          const saved = await window.notebookAppApi.getAppState();
+          if (saved && typeof saved === 'object') {
+            appState = Object.assign(cloneData(DEFAULT_STATE), saved);
+            if (!appState.courseConfigs) appState.courseConfigs = cloneData(DEFAULT_STATE.courseConfigs);
+            if (!Array.isArray(appState.students)) appState.students = [];
+            if (!Array.isArray(appState.mediaItems)) appState.mediaItems = cloneData(DEFAULT_STATE.mediaItems);
+            if (!Array.isArray(appState.exams)) appState.exams = cloneData(DEFAULT_STATE.exams);
+            if (!Array.isArray(appState.subscriptionRequests)) appState.subscriptionRequests = [];
+            if (!Array.isArray(appState.examAttempts)) appState.examAttempts = [];
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load state:', err);
+      }
+
+      populateCourseDropdowns();
+      renderAuthCurriculumSummary();
+      renderAppView();
+      refreshLucideIcons();
+
+      if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+        window.notebookAppApi.notifyAppReady();
+      }
+    }
+
+    function refreshLucideIcons() {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }
+
+    function renderAppView() {
+      const student = getCurrentStudent();
+      const authView = document.getElementById('auth-view');
+      const studentView = document.getElementById('student-view');
+      const userBox = document.getElementById('header-user-box');
+      const userChip = document.getElementById('header-student-chip');
+
+      if (!student) {
+        if (authView) authView.classList.remove('hidden');
+        if (studentView) studentView.classList.add('hidden');
+        if (userBox) userBox.classList.add('hidden');
+      } else {
+        if (authView) authView.classList.add('hidden');
+        if (studentView) studentView.classList.remove('hidden');
+        if (userBox) userBox.classList.remove('hidden');
+        if (userChip) userChip.textContent = student.fullName;
+        renderStudentPortal(student);
+      }
+
+      const devCountEl = document.getElementById('dev-students-count');
+      if (devCountEl) devCountEl.textContent = String(appState.students.length);
+      refreshLucideIcons();
+    }
+
+    /* ---------------- AUTHENTICATION & REGISTRATION ---------------- */
+
+    function switchAuthMode(mode) {
+      const regForm = document.getElementById('register-form');
+      const logForm = document.getElementById('login-form');
+      const btnReg = document.getElementById('tab-btn-register');
+      const btnLog = document.getElementById('tab-btn-login');
+      hideBanner('auth-status');
+
+      if (mode === 'register') {
+        if (regForm) regForm.classList.remove('hidden');
+        if (logForm) logForm.classList.add('hidden');
+        if (btnReg) btnReg.classList.add('active');
+        if (btnLog) btnLog.classList.remove('active');
+      } else {
+        if (regForm) regForm.classList.add('hidden');
+        if (logForm) logForm.classList.remove('hidden');
+        if (btnReg) btnReg.classList.remove('active');
+        if (btnLog) btnLog.classList.add('active');
+      }
+    }
+
+    function selectTrack(trackKey) {
+      draftTrack = trackKey;
+      if (trackKey === 'medicine' && draftElective !== 'physics' && draftElective !== 'math') {
+        draftElective = 'physics';
+      }
+      if (trackKey === 'engineering' && draftElective !== 'programming' && draftElective !== 'chemistry') {
+        draftElective = 'programming';
+      }
+      syncTrackUi();
+    }
+
+    function selectElective(trackKey, electiveId) {
+      draftTrack = trackKey;
+      draftElective = electiveId;
+      syncTrackUi();
+    }
+
+    function syncTrackUi() {
+      const cardMed = document.getElementById('track-card-med');
+      const cardEng = document.getElementById('track-card-eng');
+      if (cardMed) cardMed.classList.toggle('selected', draftTrack === 'medicine');
+      if (cardEng) cardEng.classList.toggle('selected', draftTrack === 'engineering');
+
+      const electives = ['physics', 'math', 'programming', 'chemistry'];
+      electives.forEach(function(id) {
+        const btn = document.getElementById('elec-btn-' + id);
+        if (btn) btn.classList.toggle('selected', draftElective === id);
+      });
+      renderAuthCurriculumSummary();
+    }
+
+    function renderAuthCurriculumSummary() {
+      const box = document.getElementById('auth-curriculum-summary');
+      if (!box) return;
+      const shared = COURSES_CATALOG.filter(function(c) { return c.category === 'shared'; });
+      const chosen = getCourseMeta(draftElective);
+
+      let html = '';
+      shared.forEach(function(c) {
+        html += `<div class="curriculum-row">
+          <span>${escapeHtml(c.name)}</span>
+          <span class="chip chip-neutral">مادة مشتركة</span>
+        </div>`;
+      });
+      html += `<div class="curriculum-row" style="border:1px solid var(--primary);">
+        <span>${escapeHtml(chosen.name)}</span>
+        <span class="chip chip-blue">${escapeHtml(getTrackName(draftTrack))}</span>
+      </div>`;
+      box.innerHTML = html;
+    }
+
+    function togglePasswordVis(inputId, btn) {
+      const el = document.getElementById(inputId);
+      if (!el || !btn) return;
+      if (el.type === 'password') {
+        el.type = 'text';
+        btn.textContent = `إخفاء`;
+      } else {
+        el.type = 'password';
+        btn.textContent = `إظهار`;
+      }
+    }
+
+    function fillSampleStudent() {
+      const fn = document.getElementById('reg-fullname');
+      const sp = document.getElementById('reg-student-phone');
+      const pp = document.getElementById('reg-parent-phone');
+      const em = document.getElementById('reg-email');
+      const pw = document.getElementById('reg-password');
+      const wc = document.getElementById('reg-whatsapp-confirm');
+      if (fn) fn.value = `عمر محمود إبراهيم حسن`;
+      if (sp) sp.value = `01098765432`;
+      if (pp) pp.value = `01211223344`;
+      if (em) em.value = `omar.bac2026@example.com`;
+      if (pw) pw.value = `Abqari2026`;
+      if (wc) wc.checked = true;
+      showBanner('auth-status', 'info', `تم ملء بيانات تجريبية — يمكنك التعديل عليها ثم الضغط على إنشاء الحساب.`);
+    }
+
+    async function handleRegister(event) {
+      event.preventDefault();
+      hideBanner('auth-status');
+
+      const fullNameEl = document.getElementById('reg-fullname');
+      const studentPhoneEl = document.getElementById('reg-student-phone');
+      const parentPhoneEl = document.getElementById('reg-parent-phone');
+      const emailEl = document.getElementById('reg-email');
+      const passwordEl = document.getElementById('reg-password');
+      const whatsappEl = document.getElementById('reg-whatsapp-confirm');
+
+      const fullName = fullNameEl ? fullNameEl.value.trim() : '';
+      const studentPhone = studentPhoneEl ? studentPhoneEl.value.trim() : '';
+      const parentPhone = parentPhoneEl ? parentPhoneEl.value.trim() : '';
+      const email = emailEl ? emailEl.value.trim() : '';
+      const password = passwordEl ? passwordEl.value.trim() : '';
+      const hasWhatsapp = whatsappEl ? whatsappEl.checked : false;
+
+      const nameParts = fullName.split(/\s+/).filter(Boolean);
+      if (nameParts.length < 4) {
+        showBanner('auth-status', 'error', `يرجى كتابة الاسم رباعياً بالكامل (4 مقاطع على الأقل) للمتابعة.`);
+        return;
+      }
+      if (!/^01[0125][0-9]{8}$/.test(studentPhone)) {
+        showBanner('auth-status', 'error', `رقم تليفون الطالب غير صحيح — يجب أن يتكون من 11 رقماً ويبدأ بـ 010 أو 011 أو 012 أو 015.`);
+        return;
+      }
+      if (!hasWhatsapp) {
+        showBanner('auth-status', 'error', `يجب تأكيد وجود تطبيق واتساب على رقم تليفون الطالب لإتمام التسجيل.`);
+        return;
+      }
+      if (!/^01[0125][0-9]{8}$/.test(parentPhone)) {
+        showBanner('auth-status', 'error', `رقم تليفون ولي الأمر غير صحيح — يرجى إدخال رقم مصري مكون من 11 رقماً.`);
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showBanner('auth-status', 'error', `البريد الإلكتروني غير صحيح — تأكد من كتابته مثل student@example.com.`);
+        return;
+      }
+      if (password.length < 4) {
+        showBanner('auth-status', 'error', `كلمة السر قصيرة جداً — يجب ألا تقل عن 4 أحرف أو أرقام.`);
+        return;
+      }
+
+      const duplicate = appState.students.find(function(s) {
+        return s.studentPhone === studentPhone || s.email.toLowerCase() === email.toLowerCase();
+      });
+      if (duplicate) {
+        showBanner('auth-status', 'error', `يوجد حساب مسجل مسبقاً بنفس رقم الهاتف أو البريد الإلكتروني — يمكنك تسجيل الدخول مباشرة.`);
+        return;
+      }
+
+      const newStudent = {
+        id: 'stu_' + Date.now(),
+        fullName: fullName,
+        studentPhone: studentPhone,
+        hasWhatsapp: hasWhatsapp,
+        parentPhone: parentPhone,
+        email: email,
+        password: password,
+        track: draftTrack,
+        electiveCourseId: draftElective,
+        activatedCourses: [],
+        registeredAt: new Date().toISOString().slice(0, 10)
+      };
+
+      appState.students.push(newStudent);
+      appState.currentStudentId = newStudent.id;
+      await persistState();
+      renderAppView();
+    }
+
+    async function handleLogin(event) {
+      event.preventDefault();
+      hideBanner('auth-status');
+
+      const idEl = document.getElementById('login-identifier');
+      const pwEl = document.getElementById('login-password');
+      const identifier = idEl ? idEl.value.trim().toLowerCase() : '';
+      const password = pwEl ? pwEl.value.trim() : '';
+
+      const found = appState.students.find(function(s) {
+        return (s.studentPhone === identifier || s.email.toLowerCase() === identifier) && s.password === password;
+      });
+
+      if (!found) {
+        showBanner('auth-status', 'error', `بيانات الدخول غير متطابقة — تأكد من رقم الهاتف أو البريد وكلمة السر، أو أنشئ حساباً جديداً.`);
+        return;
+      }
+
+      appState.currentStudentId = found.id;
+      await persistState();
+      renderAppView();
+    }
+
+    async function logoutStudent() {
+      stopExamTimer();
+      activeExamRunnerId = null;
+      activeViewerCourseId = null;
+      appState.currentStudentId = null;
+      await persistState();
+      renderAppView();
+    }
+
+    /* ---------------- STUDENT PORTAL ---------------- */
+
+    function getStudentCourseIds(student) {
+      return ['arabic', 'english', 'history', student.electiveCourseId];
+    }
+
+    function renderStudentPortal(student) {
+      const trackBadge = document.getElementById('student-track-badge');
+      const welcomeName = document.getElementById('student-welcome-name');
+      const welcomeSub = document.getElementById('student-welcome-sub');
+      const chosenMeta = getCourseMeta(student.electiveCourseId);
+
+      if (trackBadge) trackBadge.textContent = getTrackName(student.track);
+      if (welcomeName) welcomeName.textContent = `أهلاً بك يا ${student.fullName}`;
+      if (welcomeSub) {
+        welcomeSub.textContent = `مادتك التخصصية: ${chosenMeta.name} • المواد المشتركة: اللغة العربية، اللغة الإنجليزية، التاريخ الوطني`;
+      }
+
+      const activeCoursesEl = document.getElementById('kpi-active-courses');
+      const activeExamsEl = document.getElementById('kpi-active-exams');
+      const mediaCountEl = document.getElementById('kpi-media-count');
+
+      if (activeCoursesEl) activeCoursesEl.textContent = String((student.activatedCourses || []).length);
+      if (activeExamsEl) {
+        const count = appState.exams.filter(function(e) { return e.active; }).length;
+        activeExamsEl.textContent = String(count);
+      }
+      if (mediaCountEl) mediaCountEl.textContent = String(appState.mediaItems.length);
+
+      renderCoursesGrid(student);
+      renderStudentExams(student);
+      if (activeViewerCourseId) renderCourseViewer(activeViewerCourseId);
+    }
+
+    function setCourseFilter(filterKey, btn) {
+      activeCourseFilter = filterKey;
+      const ids = ['filter-btn-mine', 'filter-btn-shared', 'filter-btn-all'];
+      ids.forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+      if (btn) btn.classList.add('active');
+      const student = getCurrentStudent();
+      if (student) renderCoursesGrid(student);
+    }
+
+    function renderCoursesGrid(student) {
+      const grid = document.getElementById('courses-grid');
+      if (!grid) return;
+
+      const myIds = getStudentCourseIds(student);
+      let list = COURSES_CATALOG.slice();
+      if (activeCourseFilter === 'mine') {
+        list = list.filter(function(c) { return myIds.indexOf(c.id) !== -1; });
+      } else if (activeCourseFilter === 'shared') {
+        list = list.filter(function(c) { return c.category === 'shared'; });
+      }
+
+      let html = '';
+      list.forEach(function(course) {
+        const cfg = appState.courseConfigs[course.id] || { price: 300, plan: `اشتراك شهري`, enabled: true };
+        const isActivatedForStudent = (student.activatedCourses || []).indexOf(course.id) !== -1;
+        const imgCount = appState.mediaItems.filter(function(m) { return m.courseId === course.id && m.type === 'image'; }).length;
+        const vidCount = appState.mediaItems.filter(function(m) { return m.courseId === course.id && m.type === 'video'; }).length;
+        const docCount = appState.mediaItems.filter(function(m) { return m.courseId === course.id && m.type === 'file'; }).length;
+        const examCount = appState.exams.filter(function(e) { return e.courseId === course.id && e.active; }).length;
+
+        const categoryChipClass = course.category === 'shared'
+          ? 'chip-neutral'
+          : (course.category === 'medicine' ? 'chip-blue' : 'chip-orange');
+
+        let statusBadge = '';
+        if (isActivatedForStudent) {
+          statusBadge = `<span class="chip chip-green">مفعّلة لك</span>`;
+        } else if (cfg.enabled) {
+          statusBadge = `<span class="chip chip-blue">متاحة للاشتراك</span>`;
+        } else {
+          statusBadge = `<span class="chip chip-red">مغلقة حالياً</span>`;
+        }
+
+        html += `<article class="tile tile-interactive course-tile">
+          <div style="display:grid; gap:var(--space-sm);">
+            <div class="course-header">
+              <span class="chip ${categoryChipClass}">${escapeHtml(course.trackLabel)}</span>
+              ${statusBadge}
+            </div>
+            <h3 class="course-title">${escapeHtml(course.name)}</h3>
+            <p style="font-size:0.9rem; color:var(--on-surface-variant);">${escapeHtml(course.description)}</p>
+          </div>
+
+          <div style="display:grid; gap:var(--space-sm);">
+            <div style="display:flex; justify-content:space-between; align-items:center; background-color:var(--surface-pure); padding:var(--space-sm) var(--space-md); border-radius:var(--rounded-md);">
+              <span style="font-size:0.85rem; color:var(--on-surface-variant); font-weight:700;">${escapeHtml(cfg.plan)}</span>
+              <span class="course-price">${escapeHtml(cfg.price)} ج.م</span>
+            </div>
+
+            <div class="course-stats">
+              <span>${imgCount} صور</span>
+              <span>•</span>
+              <span>${vidCount} فيديوهات</span>
+              <span>•</span>
+              <span>${docCount} ملفات</span>
+              <span>•</span>
+              <span>${examCount} امتحانات</span>
+            </div>
+
+            <div class="course-actions">
+              <button type="button" class="btn btn-secondary" onclick="openCourseViewer('${course.id}')">تصفح المحتوى</button>
+              <button type="button" class="btn btn-primary" ${cfg.enabled ? '' : 'disabled'} onclick="openWhatsAppModal('${escapeHtml(course.name)}', ${Number(cfg.price)}, '${course.id}')">اشترك في الدورة</button>
+            </div>
+          </div>
+        </article>`;
+      });
+
+      grid.innerHTML = html;
+    }
+
+    function openCourseViewer(courseId) {
+      activeViewerCourseId = courseId;
+      activeViewerMediaTab = 'images';
+      const section = document.getElementById('course-viewer-section');
+      if (section) {
+        section.classList.remove('hidden');
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      ['images', 'videos', 'files'].forEach(function(k) {
+        const b = document.getElementById('media-tab-' + k);
+        if (b) b.classList.toggle('active', k === 'images');
+      });
+      renderCourseViewer(courseId);
+    }
+
+    function closeCourseViewer() {
+      activeViewerCourseId = null;
+      const section = document.getElementById('course-viewer-section');
+      if (section) section.classList.add('hidden');
+    }
+
+    function switchCourseMediaTab(tabKey, btn) {
+      activeViewerMediaTab = tabKey;
+      ['images', 'videos', 'files'].forEach(function(k) {
+        const b = document.getElementById('media-tab-' + k);
+        if (b) b.classList.remove('active');
+      });
+      if (btn) btn.classList.add('active');
+      if (activeViewerCourseId) renderCourseViewer(activeViewerCourseId);
+    }
+
+    function renderCourseViewer(courseId) {
+      const student = getCurrentStudent();
+      const course = getCourseMeta(courseId);
+      const cfg = appState.courseConfigs[courseId] || { price: 300, plan: `اشتراك شهري`, enabled: true };
+      const isActivated = student && (student.activatedCourses || []).indexOf(courseId) !== -1;
+
+      const badge = document.getElementById('viewer-course-badge');
+      const title = document.getElementById('viewer-course-title');
+      const subBtn = document.getElementById('viewer-subscribe-btn');
+      const lockNotice = document.getElementById('viewer-lock-notice');
+      const mediaWrap = document.getElementById('viewer-media-content');
+
+      if (badge) badge.textContent = course.trackLabel;
+      if (title) title.textContent = `محتوى مادة: ${course.name}`;
+      if (subBtn) {
+        subBtn.onclick = function() { openWhatsAppModal(course.name, cfg.price, course.id); };
+        subBtn.classList.toggle('hidden', isActivated);
+      }
+
+      if (lockNotice) {
+        if (isActivated) {
+          lockNotice.className = 'status-banner success visible';
+          lockNotice.textContent = `دورة ${course.name} مفعّلة لحسابك بالكامل — يمكنك مشاهدة كافة الصور والفيديوهات وتحميل المذكرات.`;
+        } else {
+          lockNotice.className = 'status-banner info visible';
+          lockNotice.textContent = `تظهر معاينة المرفقات المتاحة من المطور؛ لتفعيل الاشتراك الكامل اضغط "اشترك في الدورة" وتواصل عبر الواتساب.`;
+        }
+      }
+
+      if (!mediaWrap) return;
+      const targetType = activeViewerMediaTab === 'images' ? 'image' : (activeViewerMediaTab === 'videos' ? 'video' : 'file');
+      const items = appState.mediaItems.filter(function(m) { return m.courseId === courseId && m.type === targetType; });
+
+      if (items.length === 0) {
+        mediaWrap.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+          <strong>لا توجد مرفقات من هذا النوع حتى الآن</strong>
+          <p style="margin-top:var(--space-xs);">يقوم المطور برفع الصور والفيديوهات والملفات عبر لوحة التحكم (+) لتظهر هنا فوراً.</p>
+        </div>`;
+        return;
+      }
+
+      let html = '';
+      items.forEach(function(item) {
+        const objUrl = sessionObjectUrls[item.id] || '';
+        let previewHtml = '';
+
+        if (item.type === 'image') {
+          if (objUrl) {
+            previewHtml = `<div class="media-preview-box"><img src="${objUrl}" alt="${escapeHtml(item.title)}"></div>`;
+          } else {
+            previewHtml = `<div class="media-preview-box">
+              <div style="text-align:center; padding:var(--space-md); color:var(--on-surface-variant);">
+                <i data-lucide="image" aria-hidden="true"></i>
+                <div style="font-size:0.85rem; margin-top:var(--space-xs);">${escapeHtml(item.fileName)}</div>
+              </div>
+            </div>`;
+          }
+        } else if (item.type === 'video') {
+          if (objUrl) {
+            previewHtml = `<div class="media-preview-box"><video src="${objUrl}" controls></video></div>`;
+          } else {
+            previewHtml = `<div class="media-preview-box">
+              <div style="text-align:center; padding:var(--space-md); color:var(--on-surface-variant);">
+                <i data-lucide="play-circle" aria-hidden="true"></i>
+                <div style="font-size:0.85rem; margin-top:var(--space-xs);">فيديو تعليمي: ${escapeHtml(item.fileName)}</div>
+              </div>
+            </div>`;
+          }
+        } else {
+          previewHtml = `<div class="media-preview-box" style="min-height:110px;">
+            <div style="text-align:center; padding:var(--space-md); color:var(--primary);">
+              <i data-lucide="file-text" aria-hidden="true"></i>
+              <div style="font-size:0.85rem; margin-top:var(--space-xs);">${escapeHtml(item.fileName)} (${escapeHtml(item.fileSize)})</div>
+            </div>
+          </div>`;
+        }
+
+        html += `<div class="tile-white" style="display:grid; gap:var(--space-sm);">
+          ${previewHtml}
+          <strong style="font-size:0.95rem;">${escapeHtml(item.title)}</strong>
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:var(--label-size); color:var(--on-surface-variant);">
+            <span>${escapeHtml(item.createdAt)}</span>
+            <span>${escapeHtml(item.fileSize)}</span>
+          </div>
+          ${objUrl ? `<a class="btn btn-secondary" href="${objUrl}" download="${escapeHtml(item.fileName)}">فتح / تحميل المرفق</a>` : ''}
+        </div>`;
+      });
+
+      mediaWrap.innerHTML = html;
+      refreshLucideIcons();
+    }
+
+    /* ---------------- COMPREHENSIVE EXAMS ---------------- */
+
+    function getQuestionTypeLabel(qType) {
+      if (qType === 'mcq') return `اختيار من متعدد`;
+      if (qType === 'essay') return `مقالي`;
+      return `مختلط`;
+    }
+
+    function renderStudentExams(student) {
+      const grid = document.getElementById('student-exams-grid');
+      if (!grid) return;
+
+      if (appState.exams.length === 0) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">لا توجد امتحانات شاملة مضافة بعد.</div>`;
+        return;
+      }
+
+      let html = '';
+      appState.exams.forEach(function(exam) {
+        const course = getCourseMeta(exam.courseId);
+        const attempts = appState.examAttempts.filter(function(a) {
+          return a.examId === exam.id && a.studentId === student.id;
+        });
+        const lastAttempt = attempts.length > 0 ? attempts[attempts.length - 1] : null;
+        const scheduleDisplay = exam.scheduledAt ? exam.scheduledAt.replace('T', ' • ') : `متاح طوال اليوم`;
+
+        html += `<article class="tile-white" style="display:grid; gap:var(--space-sm);">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:var(--space-xs); flex-wrap:wrap;">
+            <span class="chip chip-blue">${escapeHtml(course.name)}</span>
+            ${exam.active ? `<span class="chip chip-green">مفعّل الآن</span>` : `<span class="chip chip-red">متوقف من المطور</span>`}
+          </div>
+          <h3 style="font-weight:800; font-size:1.1rem;">${escapeHtml(exam.title)}</h3>
+          <div style="display:grid; gap:var(--space-xs); font-size:0.88rem; color:var(--on-surface-variant);">
+            <span>عدد الأسئلة: <strong>${escapeHtml(exam.questionCount)}</strong> • النوع: <strong>${escapeHtml(getQuestionTypeLabel(exam.questionType))}</strong></span>
+            <span>المدة الزمنية: <strong>${escapeHtml(exam.durationMinutes)} دقيقة</strong></span>
+            <span>التوقيت: <bdi dir="ltr" class="tabular">${escapeHtml(scheduleDisplay)}</bdi></span>
+            ${lastAttempt ? `<span style="color:var(--positive); font-weight:700;">آخر نتيجة: ${escapeHtml(lastAttempt.scoreText)}</span>` : ''}
+          </div>
+          <button type="button" class="btn btn-primary" ${exam.active ? '' : 'disabled'} onclick="startExam('${exam.id}')">
+            <i data-lucide="play" aria-hidden="true"></i>
+            <span>${exam.active ? 'بدء الامتحان الشامل' : 'الامتحان متوقف حالياً'}</span>
+          </button>
+        </article>`;
+      });
+      grid.innerHTML = html;
+      refreshLucideIcons();
+    }
+
+    function startExam(examId) {
+      const exam = appState.exams.find(function(e) { return e.id === examId; });
+      if (!exam || !exam.active) return;
+
+      activeExamRunnerId = examId;
+      const runner = document.getElementById('exam-runner-box');
+      const titleEl = document.getElementById('runner-exam-title');
+      const metaEl = document.getElementById('runner-exam-meta');
+      const qListEl = document.getElementById('runner-questions-list');
+      const submitBtn = document.getElementById('runner-submit-btn');
+
+      hideBanner('runner-result-banner');
+      if (submitBtn) submitBtn.disabled = false;
+      if (runner) runner.classList.remove('hidden');
+      if (titleEl) titleEl.textContent = exam.title;
+      if (metaEl) metaEl.textContent = `${getCourseMeta(exam.courseId).name} • ${exam.questionCount} أسئلة • ${getQuestionTypeLabel(exam.questionType)}`;
+
+      const questions = buildExamQuestionsList(exam);
+      let html = '';
+      questions.forEach(function(q, idx) {
+        html += `<div class="question-card">
+          <strong>سؤال ${idx + 1}: ${escapeHtml(q.prompt)}</strong>`;
+        if (q.kind === 'mcq') {
+          html += `<div style="display:grid; gap:var(--space-xs);">`;
+          q.options.forEach(function(opt, optIdx) {
+            html += `<label class="mcq-option">
+              <input type="radio" name="exam_q_${idx}" value="${optIdx}">
+              <span>${escapeHtml(opt)}</span>
+            </label>`;
+          });
+          html += `</div>`;
+        } else {
+          html += `<div class="field">
+            <label for="essay_q_${idx}">إجابتك المقالية</label>
+            <textarea class="textarea" id="essay_q_${idx}" placeholder="اكتب إجابتك النموذجية هنا..."></textarea>
+          </div>`;
+        }
+        html += `</div>`;
+      });
+
+      if (qListEl) qListEl.innerHTML = html;
+
+      stopExamTimer();
+      examRemainingSeconds = Math.max(60, Number(exam.durationMinutes || 30) * 60);
+      updateTimerReadout();
+      examTimerHandle = setInterval(function() {
+        examRemainingSeconds -= 1;
+        updateTimerReadout();
+        if (examRemainingSeconds <= 0) {
+          stopExamTimer();
+          submitExamAttempt();
+        }
+      }, 1000);
+
+      if (runner) runner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function buildExamQuestionsList(exam) {
+      if (Array.isArray(exam.questions) && exam.questions.length > 0) {
+        return exam.questions;
+      }
+      const list = [];
+      const count = Math.min(20, Math.max(1, Number(exam.questionCount) || 5));
+      for (let i = 0; i < count; i++) {
+        const isEssay = exam.questionType === 'essay' || (exam.questionType === 'mixed' && i % 2 === 1);
+        if (isEssay) {
+          list.push({
+            id: 'gen_' + i,
+            kind: 'essay',
+            prompt: `سؤال مقالي رقم ${i + 1} في مادة ${getCourseMeta(exam.courseId).name} — وضح المفهوم الأساسي مع التمثيل.`,
+            options: [],
+            correctIndex: -1
+          });
+        } else {
+          list.push({
+            id: 'gen_' + i,
+            kind: 'mcq',
+            prompt: `سؤال اختيار من متعدد رقم ${i + 1} في ${exam.title} — اختر الإجابة الأدق:`,
+            options: [`الاختيار الأول (أ)`, `الاختيار الثاني (ب)`, `الاختيار الثالث (ج)`, `الاختيار الرابع (د)`],
+            correctIndex: 0
+          });
+        }
+      }
+      return list;
+    }
+
+    function updateTimerReadout() {
+      const el = document.getElementById('runner-timer');
+      if (!el) return;
+      const mins = Math.floor(Math.max(0, examRemainingSeconds) / 60);
+      const secs = Math.max(0, examRemainingSeconds) % 60;
+      el.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function stopExamTimer() {
+      if (examTimerHandle) {
+        clearInterval(examTimerHandle);
+        examTimerHandle = null;
+      }
+    }
+
+    async function submitExamAttempt() {
+      const student = getCurrentStudent();
+      const exam = appState.exams.find(function(e) { return e.id === activeExamRunnerId; });
+      if (!student || !exam) return;
+
+      stopExamTimer();
+      const questions = buildExamQuestionsList(exam);
+      let mcqTotal = 0;
+      let mcqCorrect = 0;
+      let essayCount = 0;
+
+      questions.forEach(function(q, idx) {
+        if (q.kind === 'mcq') {
+          mcqTotal += 1;
+          const selected = document.querySelector('input[name="exam_q_' + idx + '"]:checked');
+          if (selected && Number(selected.value) === Number(q.correctIndex)) {
+            mcqCorrect += 1;
+          }
+        } else {
+          essayCount += 1;
+        }
+      });
+
+      const scoreText = mcqTotal > 0
+        ? `${mcqCorrect} من ${mcqTotal} (اختياري)` + (essayCount > 0 ? ` + ${essayCount} مقالي قيد المراجعة` : '')
+        : `تم تسليم ${essayCount} أسئلة مقالية للمراجعة`;
+
+      appState.examAttempts.push({
+        id: 'att_' + Date.now(),
+        examId: exam.id,
+        studentId: student.id,
+        scoreText: scoreText,
+        submittedAt: new Date().toISOString().slice(0, 10)
+      });
+      await persistState();
+
+      showBanner('runner-result-banner', 'success', `تم تسليم الامتحان بنجاح! النتيجة: ${scoreText}`);
+      const submitBtn = document.getElementById('runner-submit-btn');
+      if (submitBtn) submitBtn.disabled = true;
+      renderStudentExams(student);
+    }
+
+    function closeExamRunner() {
+      stopExamTimer();
+      activeExamRunnerId = null;
+      const runner = document.getElementById('exam-runner-box');
+      if (runner) runner.classList.add('hidden');
+    }
+
+    /* ---------------- WHATSAPP SUBSCRIPTION SYSTEM ---------------- */
+
+    function buildWhatsAppMessage(studentName) {
+      return `أنا ${studentName} أريد الاشتراك في هذه الدورة رجائاً اعطيني رقم للتحويل عليه`;
+    }
+
+    function openWhatsAppModal(courseName, price, courseId) {
+      const student = getCurrentStudent();
+      const studentName = student ? student.fullName : `طالب بالمنصة`;
+      activeWaCourseName = courseName;
+      activeWaCourseId = courseId || '';
+      activeWaCoursePrice = price || 0;
+
+      const backdrop = document.getElementById('wa-modal-backdrop');
+      const infoEl = document.getElementById('wa-course-info');
+      const msgEl = document.getElementById('wa-message-preview');
+
+      hideBanner('wa-copy-feedback');
+      if (infoEl) {
+        infoEl.innerHTML = `<div>
+          <strong>الدورة المختارة: ${escapeHtml(courseName)}</strong>
+          <div style="font-size:0.85rem; color:var(--on-surface-variant);">الطالب: ${escapeHtml(studentName)}</div>
+        </div>
+        ${price > 0 ? `<span class="chip chip-blue">${escapeHtml(price)} ج.م</span>` : `<span class="chip chip-blue">باقة شاملة</span>`}`;
+      }
+      if (msgEl) {
+        msgEl.textContent = buildWhatsAppMessage(studentName);
+      }
+      if (backdrop) backdrop.classList.add('open');
+      refreshLucideIcons();
+    }
+
+    function closeWhatsAppModal() {
+      const backdrop = document.getElementById('wa-modal-backdrop');
+      if (backdrop) backdrop.classList.remove('open');
+    }
+
+    function copyTextValue(text, successMsg) {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(text).then(function() {
+          showBanner('wa-copy-feedback', 'success', successMsg);
+        }).catch(function() {
+          fallbackCopy(text, successMsg);
+        });
+      } else {
+        fallbackCopy(text, successMsg);
+      }
+    }
+
+    function fallbackCopy(text, successMsg) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showBanner('wa-copy-feedback', 'success', successMsg);
+      } catch (e) {
+        showBanner('wa-copy-feedback', 'info', `يمكنك تحديد النص ونسخه يدوياً: ` + text);
+      }
+      document.body.removeChild(ta);
+    }
+
+    function copyWhatsAppMessage() {
+      const msgEl = document.getElementById('wa-message-preview');
+      const text = msgEl ? msgEl.textContent : '';
+      copyTextValue(text, `تم نسخ رسالة الواتساب! أرسلها الآن إلى 01276092939 أو 01124896206.`);
+    }
+
+    async function submitSubscriptionRequest() {
+      const student = getCurrentStudent();
+      if (!student) return;
+      appState.subscriptionRequests.push({
+        id: 'req_' + Date.now(),
+        studentId: student.id,
+        studentName: student.fullName,
+        studentPhone: student.studentPhone,
+        courseId: activeWaCourseId || student.electiveCourseId,
+        courseName: activeWaCourseName,
+        price: activeWaCoursePrice,
+        status: 'pending',
+        createdAt: new Date().toISOString().slice(0, 10)
+      });
+      await persistState();
+      showBanner('wa-copy-feedback', 'success', `تم تسجيل طلب اشتراكك في الإدارة! أرسل الرسالة على واتساب 01276092939 أو 01124896206 لتفعيل الدورة فوراً.`);
+    }
+
+    /* ---------------- DEVELOPER CONTROL PANEL (+) ---------------- */
+
+    function openDevPanel() {
+      const backdrop = document.getElementById('dev-panel-backdrop');
+      if (backdrop) backdrop.classList.add('open');
+      populateCourseDropdowns();
+      switchDevTab(activeDevTab);
+      refreshLucideIcons();
+    }
+
+    function closeDevPanel() {
+      const backdrop = document.getElementById('dev-panel-backdrop');
+      if (backdrop) backdrop.classList.remove('open');
+      const student = getCurrentStudent();
+      if (student) renderStudentPortal(student);
+    }
+
+    function switchDevTab(tabKey) {
+      activeDevTab = tabKey;
+      hideBanner('dev-status-banner');
+      const tabs = ['media', 'exams', 'pricing', 'students'];
+      tabs.forEach(function(k) {
+        const panel = document.getElementById('dev-tab-' + k);
+        const btn = document.getElementById('dev-tab-btn-' + k);
+        if (panel) panel.classList.toggle('hidden', k !== tabKey);
+        if (btn) btn.classList.toggle('active', k === tabKey);
+      });
+      const emojiBtn = document.getElementById('dev-btn-students-emoji');
+      if (emojiBtn) emojiBtn.classList.toggle('active', tabKey === 'students');
+
+      if (tabKey === 'media') renderDevMediaLists();
+      if (tabKey === 'exams') renderDevExamsTable();
+      if (tabKey === 'pricing') {
+        renderDevPricingTable();
+        renderDevRequests();
+      }
+      if (tabKey === 'students') renderDevStudentsTable();
+      refreshLucideIcons();
+    }
+
+    function populateCourseDropdowns() {
+      const ids = ['upload-img-course', 'upload-vid-course', 'upload-doc-course', 'exam-course'];
+      const optionsHtml = COURSES_CATALOG.map(function(c) {
+        return `<option value="${c.id}">${escapeHtml(c.name)} (${escapeHtml(c.trackLabel)})</option>`;
+      }).join('');
+      ids.forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = optionsHtml;
+      });
+    }
+
+    async function uploadMediaItem(type) {
+      hideBanner('dev-status-banner');
+      const prefix = type === 'image' ? 'img' : (type === 'video' ? 'vid' : 'doc');
+      const courseEl = document.getElementById('upload-' + prefix + '-course');
+      const titleEl = document.getElementById('upload-' + prefix + '-title');
+      const fileEl = document.getElementById('upload-' + prefix + '-file');
+
+      const courseId = courseEl ? courseEl.value : 'arabic';
+      const title = titleEl ? titleEl.value.trim() : '';
+      const file = fileEl && fileEl.files && fileEl.files[0] ? fileEl.files[0] : null;
+
+      if (!title) {
+        showBanner('dev-status-banner', 'error', `يرجى كتابة عنوان للمرفق قبل الرفع.`);
+        return;
+      }
+      if (!file) {
+        showBanner('dev-status-banner', 'error', `يرجى اختيار ملف من جهازك أولاً.`);
+        return;
+      }
+
+      const itemId = 'med_' + Date.now();
+      sessionObjectUrls[itemId] = URL.createObjectURL(file);
+
+      const kbSize = Math.max(1, Math.round(file.size / 1024));
+      const sizeStr = kbSize > 1024 ? (kbSize / 1024).toFixed(1) + ' MB' : kbSize + ' KB';
+
+      appState.mediaItems.push({
+        id: itemId,
+        courseId: courseId,
+        type: type,
+        title: title,
+        fileName: file.name,
+        fileSize: sizeStr,
+        createdAt: new Date().toISOString().slice(0, 10)
+      });
+
+      await persistState();
+      if (titleEl) titleEl.value = '';
+      if (fileEl) fileEl.value = '';
+      renderDevMediaLists();
+      showBanner('dev-status-banner', 'success', `تم رفع "${title}" بنجاح وإضافته لمادة ${getCourseMeta(courseId).name}.`);
+    }
+
+    async function removeMediaItem(itemId) {
+      appState.mediaItems = appState.mediaItems.filter(function(m) { return m.id !== itemId; });
+      if (sessionObjectUrls[itemId]) {
+        URL.revokeObjectURL(sessionObjectUrls[itemId]);
+        delete sessionObjectUrls[itemId];
+      }
+      await persistState();
+      renderDevMediaLists();
+      showBanner('dev-status-banner', 'info', `تمت إزالة العنصر من محتوى المنصة.`);
+    }
+
+    function renderDevMediaLists() {
+      ['image', 'video', 'file'].forEach(function(type) {
+        const container = document.getElementById('dev-list-' + type);
+        if (!container) return;
+        const items = appState.mediaItems.filter(function(m) { return m.type === type; });
+        if (items.length === 0) {
+          container.innerHTML = `<div style="font-size:0.85rem; color:var(--on-surface-variant); padding:var(--space-sm) 0;">لا توجد عناصر مرفوعة حالياً.</div>`;
+          return;
+        }
+        container.innerHTML = items.map(function(m) {
+          return `<div class="tile-white" style="display:flex; justify-content:space-between; align-items:center; gap:var(--space-sm); padding:var(--space-sm) var(--space-md);">
+            <div style="min-width:0;">
+              <div style="font-weight:700; font-size:0.88rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(m.title)}</div>
+              <div style="font-size:0.78rem; color:var(--on-surface-variant);">${escapeHtml(getCourseMeta(m.courseId).name)} • ${escapeHtml(m.fileSize)}</div>
+            </div>
+            <button type="button" class="btn btn-danger" style="min-height:36px; padding:var(--space-xs) var(--space-sm); font-size:0.8rem;" onclick="removeMediaItem('${m.id}')">إزالة</button>
+          </div>`;
+        }).join('');
+      });
+    }
+
+    async function createExam(event) {
+      event.preventDefault();
+      hideBanner('dev-status-banner');
+
+      const titleEl = document.getElementById('exam-title');
+      const courseEl = document.getElementById('exam-course');
+      const countEl = document.getElementById('exam-q-count');
+      const typeEl = document.getElementById('exam-q-type');
+      const durEl = document.getElementById('exam-duration');
+      const schedEl = document.getElementById('exam-schedule');
+      const fileEl = document.getElementById('exam-file');
+      const activeEl = document.getElementById('exam-active-init');
+
+      const title = titleEl ? titleEl.value.trim() : '';
+      const courseId = courseEl ? courseEl.value : 'arabic';
+      const questionCount = countEl ? Number(countEl.value) : 5;
+      const questionType = typeEl ? typeEl.value : 'mcq';
+      const durationMinutes = durEl ? Number(durEl.value) : 45;
+      const scheduledAt = schedEl ? schedEl.value : '';
+      const active = activeEl ? activeEl.value === 'true' : true;
+      const attachFile = fileEl && fileEl.files && fileEl.files[0] ? fileEl.files[0].name : '';
+
+      if (!title) {
+        showBanner('dev-status-banner', 'error', `يرجى كتابة عنوان الامتحان الشامل.`);
+        return;
+      }
+
+      const newExam = {
+        id: 'ex_' + Date.now(),
+        title: title,
+        courseId: courseId,
+        questionCount: questionCount,
+        questionType: questionType,
+        durationMinutes: durationMinutes,
+        scheduledAt: scheduledAt,
+        active: active,
+        attachmentName: attachFile,
+        questions: []
+      };
+
+      appState.exams.push(newExam);
+      await persistState();
+      if (titleEl) titleEl.value = '';
+      if (fileEl) fileEl.value = '';
+      renderDevExamsTable();
+      showBanner('dev-status-banner', 'success', `تم رفع الامتحان الشامل "${title}" بنجاح.`);
+    }
+
+    async function toggleExamActive(examId) {
+      const exam = appState.exams.find(function(e) { return e.id === examId; });
+      if (!exam) return;
+      exam.active = !exam.active;
+      await persistState();
+      renderDevExamsTable();
+      showBanner('dev-status-banner', 'info', exam.active ? `تم تفعيل الامتحان للطلاب.` : `تم إيقاف الامتحان مؤقتاً.`);
+    }
+
+    async function deleteExam(examId, btn) {
+      if (btn && btn.dataset.armed !== 'true') {
+        btn.dataset.armed = 'true';
+        btn.textContent = `تأكيد الحذف؟`;
+        return;
+      }
+      appState.exams = appState.exams.filter(function(e) { return e.id !== examId; });
+      await persistState();
+      renderDevExamsTable();
+      showBanner('dev-status-banner', 'info', `تم حذف الامتحان الشامل.`);
+    }
+
+    function renderDevExamsTable() {
+      const tbody = document.getElementById('dev-exams-tbody');
+      if (!tbody) return;
+      if (appState.exams.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--on-surface-variant);">لا توجد امتحانات مسجلة.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = appState.exams.map(function(ex) {
+        const sched = ex.scheduledAt ? ex.scheduledAt.replace('T', ' ') : `مفتوح`;
+        return `<tr>
+          <td><strong>${escapeHtml(ex.title)}</strong></td>
+          <td>${escapeHtml(getCourseMeta(ex.courseId).name)}</td>
+          <td class="tabular">${escapeHtml(ex.questionCount)}</td>
+          <td>${escapeHtml(getQuestionTypeLabel(ex.questionType))}</td>
+          <td class="tabular">${escapeHtml(ex.durationMinutes)} د • <bdi dir="ltr">${escapeHtml(sched)}</bdi></td>
+          <td>
+            <button type="button" class="toggle-btn ${ex.active ? 'on' : 'off'}" onclick="toggleExamActive('${ex.id}')">
+              <span>${ex.active ? 'مفعّل' : 'متوقف'}</span>
+            </button>
+          </td>
+          <td>
+            <button type="button" class="btn btn-danger" style="min-height:36px; padding:var(--space-xs) var(--space-sm);" onclick="deleteExam('${ex.id}', this)">حذف</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function renderDevPricingTable() {
+      const tbody = document.getElementById('dev-pricing-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = COURSES_CATALOG.map(function(c) {
+        const cfg = appState.courseConfigs[c.id] || { price: 300, plan: `اشتراك شهري`, enabled: true };
+        return `<tr>
+          <td><strong>${escapeHtml(c.name)}</strong></td>
+          <td>${escapeHtml(c.trackLabel)}</td>
+          <td><input class="input tabular" id="price-inp-${c.id}" type="number" min="0" value="${escapeHtml(cfg.price)}" style="max-width:110px;"></td>
+          <td><input class="input" id="plan-inp-${c.id}" type="text" value="${escapeHtml(cfg.plan)}" style="max-width:160px;"></td>
+          <td>
+            <button type="button" class="toggle-btn ${cfg.enabled ? 'on' : 'off'}" onclick="toggleCourseEnabled('${c.id}')">
+              ${cfg.enabled ? 'مفتوحة للطلاب' : 'مغلقة'}
+            </button>
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary" style="min-height:38px; padding:var(--space-xs) var(--space-md);" onclick="saveCoursePricing('${c.id}')">حفظ</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function saveCoursePricing(courseId) {
+      const priceEl = document.getElementById('price-inp-' + courseId);
+      const planEl = document.getElementById('plan-inp-' + courseId);
+      const cfg = appState.courseConfigs[courseId] || { price: 300, plan: `اشتراك شهري`, enabled: true };
+      cfg.price = priceEl ? Math.max(0, Number(priceEl.value)) : cfg.price;
+      cfg.plan = planEl ? planEl.value.trim() || `اشتراك شهري` : cfg.plan;
+      appState.courseConfigs[courseId] = cfg;
+      await persistState();
+      showBanner('dev-status-banner', 'success', `تم تحديث سعر وخطة اشتراك مادة ${getCourseMeta(courseId).name}.`);
+    }
+
+    async function toggleCourseEnabled(courseId) {
+      const cfg = appState.courseConfigs[courseId] || { price: 300, plan: `اشتراك شهري`, enabled: true };
+      cfg.enabled = !cfg.enabled;
+      appState.courseConfigs[courseId] = cfg;
+      await persistState();
+      renderDevPricingTable();
+      showBanner('dev-status-banner', 'info', cfg.enabled ? `تم فتح دورة ${getCourseMeta(courseId).name} للاشتراك.` : `تم إغلاق دورة ${getCourseMeta(courseId).name}.`);
+    }
+
+    function renderDevRequests() {
+      const box = document.getElementById('dev-requests-container');
+      if (!box) return;
+      if (appState.subscriptionRequests.length === 0) {
+        box.innerHTML = `<div class="empty-state">لا توجد طلبات اشتراك مسجلة حتى الآن.</div>`;
+        return;
+      }
+      box.innerHTML = `<div class="table-scroll"><table class="data-table">
+        <thead>
+          <tr>
+            <th>الطالب</th>
+            <th>الهاتف</th>
+            <th>الدورة المطلوبة</th>
+            <th>التاريخ</th>
+            <th>الحالة / الإجراء</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${appState.subscriptionRequests.map(function(req) {
+            return `<tr>
+              <td><strong>${escapeHtml(req.studentName)}</strong></td>
+              <td class="tabular" dir="ltr">${escapeHtml(req.studentPhone)}</td>
+              <td>${escapeHtml(req.courseName)} (${escapeHtml(req.price)} ج.م)</td>
+              <td class="tabular">${escapeHtml(req.createdAt)}</td>
+              <td>
+                ${req.status === 'approved'
+                  ? `<span class="chip chip-green">تم التفعيل</span>`
+                  : `<button type="button" class="btn btn-positive" style="min-height:36px; padding:var(--space-xs) var(--space-md);" onclick="approveSubscriptionRequest('${req.id}')">تفعيل الدورة للطالب</button>`}
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table></div>`;
+    }
+
+    async function approveSubscriptionRequest(reqId) {
+      const req = appState.subscriptionRequests.find(function(r) { return r.id === reqId; });
+      if (!req) return;
+      req.status = 'approved';
+      const student = appState.students.find(function(s) { return s.id === req.studentId; });
+      if (student) {
+        if (!Array.isArray(student.activatedCourses)) student.activatedCourses = [];
+        if (req.courseId && student.activatedCourses.indexOf(req.courseId) === -1) {
+          student.activatedCourses.push(req.courseId);
+        } else if (!req.courseId) {
+          getStudentCourseIds(student).forEach(function(cid) {
+            if (student.activatedCourses.indexOf(cid) === -1) student.activatedCourses.push(cid);
+          });
+        }
+      }
+      await persistState();
+      renderDevRequests();
+      showBanner('dev-status-banner', 'success', `تم تفعيل الاشتراك للطالب ${req.studentName}.`);
+    }
+
+    /* ---------------- REGISTERED STUDENTS DIRECTORY (👤) ---------------- */
+
+    function renderDevStudentsTable() {
+      const wrap = document.getElementById('dev-students-table-wrap');
+      const searchEl = document.getElementById('dev-student-search');
+      const query = searchEl ? searchEl.value.trim().toLowerCase() : '';
+      const countEl = document.getElementById('dev-students-count');
+      if (countEl) countEl.textContent = String(appState.students.length);
+      if (!wrap) return;
+
+      let rows = appState.students;
+      if (query) {
+        rows = rows.filter(function(s) {
+          return s.fullName.toLowerCase().includes(query) ||
+            s.studentPhone.includes(query) ||
+            s.parentPhone.includes(query) ||
+            s.email.toLowerCase().includes(query);
+        });
+      }
+
+      if (rows.length === 0) {
+        wrap.innerHTML = `<div class="empty-state">
+          <strong>لا يوجد طلاب مسجلون مطابقون للبحث</strong>
+          <p style="margin-top:var(--space-xs);">فور تسجيل أي طالب عبر استمارة التسجيل لأول مرة ستظهر كافة بياناته التفصيلية هنا تلقائياً.</p>
+        </div>`;
+        return;
+      }
+
+      wrap.innerHTML = `<table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>الاسم الرباعي</th>
+            <th>رقم الطالب (واتساب)</th>
+            <th>رقم ولي الأمر</th>
+            <th>البريد الإلكتروني</th>
+            <th>كلمة السر</th>
+            <th>المسار والمادة</th>
+            <th>تفعيل الدورات</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(function(s, idx) {
+            const myIds = getStudentCourseIds(s);
+            const courseButtons = myIds.map(function(cid) {
+              const active = (s.activatedCourses || []).indexOf(cid) !== -1;
+              return `<button type="button" class="toggle-btn ${active ? 'on' : 'off'}" style="min-height:32px; font-size:0.75rem; padding:2px 10px;" onclick="toggleStudentCourse('${s.id}', '${cid}')">${escapeHtml(getCourseMeta(cid).name)}</button>`;
+            }).join(' ');
+
+            return `<tr>
+              <td class="tabular">${idx + 1}</td>
+              <td><strong>${escapeHtml(s.fullName)}</strong></td>
+              <td class="tabular"><bdi dir="ltr">${escapeHtml(s.studentPhone)}</bdi> ${s.hasWhatsapp ? `<span class="chip chip-green">واتساب</span>` : ''}</td>
+              <td class="tabular"><bdi dir="ltr">${escapeHtml(s.parentPhone)}</bdi></td>
+              <td dir="ltr">${escapeHtml(s.email)}</td>
+              <td class="tabular" dir="ltr">${escapeHtml(s.password)}</td>
+              <td>
+                <div style="font-weight:700;">${escapeHtml(getTrackName(s.track))}</div>
+                <div style="font-size:0.8rem; color:var(--primary);">التخصص: ${escapeHtml(getCourseMeta(s.electiveCourseId).name)}</div>
+              </td>
+              <td><div style="display:flex; flex-wrap:wrap; gap:4px;">${courseButtons}</div></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
+    }
+
+    async function toggleStudentCourse(studentId, courseId) {
+      const student = appState.students.find(function(s) { return s.id === studentId; });
+      if (!student) return;
+      if (!Array.isArray(student.activatedCourses)) student.activatedCourses = [];
+      const idx = student.activatedCourses.indexOf(courseId);
+      if (idx === -1) {
+        student.activatedCourses.push(courseId);
+      } else {
+        student.activatedCourses.splice(idx, 1);
+      }
+      await persistState();
+      renderDevStudentsTable();
+    }
+
+    function exportStudentsCsv() {
+      if (appState.students.length === 0) {
+        showBanner('dev-status-banner', 'info', `لا يوجد طلاب لتصديرهم حالياً.`);
+        return;
+      }
+      const header = ['الاسم الرباعي', 'رقم الطالب', 'واتساب', 'رقم ولي الأمر', 'البريد الإلكتروني', 'كلمة السر', 'المسار', 'المادة التخصصية'];
+      const lines = [header.join(',')];
+      appState.students.forEach(function(s) {
+        const cols = [
+          `"${s.fullName}"`,
+          `"${s.studentPhone}"`,
+          s.hasWhatsapp ? '"نعم"' : '"لا"',
+          `"${s.parentPhone}"`,
+          `"${s.email}"`,
+          `"${s.password}"`,
+          `"${getTrackName(s.track)}"`,
+          `"${getCourseMeta(s.electiveCourseId).name}"`
+        ];
+        lines.push(cols.join(','));
+      });
+      const csvContent = '\uFEFF' + lines.join('\n');
+      if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === 'function') {
+        window.notebookAppApi.triggerFileDownload({
+          content: csvContent,
+          contentType: 'text/csv',
+          encoding: 'UTF-8',
+          filename: 'al-abqari-students.csv'
+        });
+      }
+    }
+
+    /* ---------------- HELPERS ---------------- */
+
+    function showBanner(elId, kind, text) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.className = 'status-banner visible ' + kind;
+      el.textContent = text;
+    }
+
+    function hideBanner(elId) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.className = 'status-banner';
+      el.textContent = '';
+    }
+
+    function scrollToSection(sectionId) {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
